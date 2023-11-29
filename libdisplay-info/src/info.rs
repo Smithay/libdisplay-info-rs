@@ -1,4 +1,4 @@
-use crate::{edid::Edid, ffi};
+use crate::{edid::Edid, ffi, string_from_owned_ffi_ptr};
 
 #[derive(Debug)]
 pub struct Info(*mut ffi::info::di_info);
@@ -21,7 +21,7 @@ impl Info {
     }
 
     /// Get the failure messages for this blob.
-    /// 
+    ///
     /// `None` is returned if the blob conforms to the relevant specifications.
     pub fn failure_msg(&self) -> Option<&std::ffi::CStr> {
         let failure_msg = unsafe { ffi::info::di_info_get_failure_msg(self.0) };
@@ -48,6 +48,48 @@ impl Info {
         } else {
             Some(unsafe { Edid::from_ptr(edid as *const ffi::edid::di_edid) })
         }
+    }
+
+    /// Get the make of the display device.
+    ///
+    /// This is the manufacturer name, either company name or PNP ID.
+    /// This string is informational and not meant to be used in programmatic
+    /// decisions, configuration keys, etc.
+    ///
+    /// The string is in UTF-8 and may contain any characters except ASCII control
+    /// codes.
+    ///
+    /// `None` is returned if the information is not available.
+    pub fn make(&self) -> Option<String> {
+        string_from_owned_ffi_ptr(unsafe { ffi::info::di_info_get_make(self.0) })
+    }
+
+    /// Get the model of the display device.
+    ///
+    /// This is the product name/model string or product number.
+    /// This string is informational and not meant to be used in programmatic
+    /// decisions, configuration keys, etc.
+    ///
+    /// The string is in UTF-8 and may contain any characters except ASCII control
+    /// codes.
+    ///
+    /// `None` is returned if the information is not available.
+    pub fn model(&self) -> Option<String> {
+        string_from_owned_ffi_ptr(unsafe { ffi::info::di_info_get_model(self.0) })
+    }
+
+    /// Get the serial of the display device.
+    ///
+    /// This is the product serial string or the serial number.
+    /// This string is informational and not meant to be used in programmatic
+    /// decisions, configuration keys, etc.
+    ///
+    /// The string is in UTF-8 and may contain any characters except ASCII control
+    /// codes.
+    ///
+    /// `None` is returned if the information is not available.
+    pub fn serial(&self) -> Option<String> {
+        string_from_owned_ffi_ptr(unsafe { ffi::info::di_info_get_serial(self.0) })
     }
 }
 
