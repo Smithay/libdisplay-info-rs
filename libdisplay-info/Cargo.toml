@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 libdisplay-info-sys = { version = "0.1.0", path = "../libdisplay-info-sys" }
 libc = "0.2.149"
+thiserror = "1.0.50"
