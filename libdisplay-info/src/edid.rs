@@ -110,6 +110,27 @@ impl<'info> Edid<'info> {
         ChromaticityCoords::from(unsafe { *ffi::edid::di_edid_get_chromaticity_coords(self.edid) })
     }
 
+    /// Get established timings I and II.
+    pub fn established_timings(&self) -> EstablishedTimings {
+        EstablishedTimings::from(unsafe {
+            *ffi::edid::di_edid_get_established_timings_i_ii(self.edid)
+        })
+    }
+
+    /// Get a list of EDID standard timings.
+    pub fn standard_timings(&self) -> &[StandardTiming] {
+        let standard_timings = unsafe { ffi::edid::di_edid_get_standard_timings(self.edid) };
+
+        let mut len = 0;
+        while !unsafe { *standard_timings.offset(len) }.is_null() {
+            len += 1;
+        }
+
+        unsafe {
+            std::slice::from_raw_parts(standard_timings as *const StandardTiming, len as usize)
+        }
+    }
+
     /// Get a list of EDID extensions.
     pub fn extensions(&self) -> &[Extension] {
         let extensions = unsafe { ffi::edid::di_edid_get_extensions(self.edid) };
@@ -443,6 +464,114 @@ impl From<ffi::edid::di_edid_chromaticity_coords> for ChromaticityCoords {
             blue_y: value.blue_y,
             white_x: value.white_x,
             white_y: value.white_y,
+        }
+    }
+}
+
+/// Established timings I and II, defined in section 3.8.
+#[derive(Debug, Copy, Clone)]
+pub struct EstablishedTimings {
+    pub has_720x400_70hz: bool,
+    pub has_720x400_88hz: bool,
+    pub has_640x480_60hz: bool,
+    pub has_640x480_67hz: bool,
+    pub has_640x480_72hz: bool,
+    pub has_640x480_75hz: bool,
+    pub has_800x600_56hz: bool,
+    pub has_800x600_60hz: bool,
+    pub has_800x600_72hz: bool,
+    pub has_800x600_75hz: bool,
+    pub has_832x624_75hz: bool,
+    pub has_1024x768_87hz_interlaced: bool,
+    pub has_1024x768_60hz: bool,
+    pub has_1024x768_70hz: bool,
+    pub has_1024x768_75hz: bool,
+    pub has_1280x1024_75hz: bool,
+    pub has_1152x870_75hz: bool,
+}
+
+impl From<ffi::edid::di_edid_established_timings_i_ii> for EstablishedTimings {
+    fn from(value: ffi::edid::di_edid_established_timings_i_ii) -> Self {
+        Self {
+            has_720x400_70hz: value.has_720x400_70hz,
+            has_720x400_88hz: value.has_720x400_88hz,
+            has_640x480_60hz: value.has_640x480_60hz,
+            has_640x480_67hz: value.has_640x480_67hz,
+            has_640x480_72hz: value.has_640x480_72hz,
+            has_640x480_75hz: value.has_640x480_75hz,
+            has_800x600_56hz: value.has_800x600_56hz,
+            has_800x600_60hz: value.has_800x600_60hz,
+            has_800x600_72hz: value.has_800x600_72hz,
+            has_800x600_75hz: value.has_800x600_75hz,
+            has_832x624_75hz: value.has_832x624_75hz,
+            has_1024x768_87hz_interlaced: value.has_1024x768_87hz_interlaced,
+            has_1024x768_60hz: value.has_1024x768_60hz,
+            has_1024x768_70hz: value.has_1024x768_70hz,
+            has_1024x768_75hz: value.has_1024x768_75hz,
+            has_1280x1024_75hz: value.has_1280x1024_75hz,
+            has_1152x870_75hz: value.has_1152x870_75hz,
+        }
+    }
+}
+
+/// Aspect ratio for an EDID standard timing.
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[repr(u32)]
+pub enum StandardTimingAspectRatio {
+    _16_10 = ffi::edid::di_edid_standard_timing_aspect_ratio_DI_EDID_STANDARD_TIMING_16_10,
+    _4_3 = ffi::edid::di_edid_standard_timing_aspect_ratio_DI_EDID_STANDARD_TIMING_4_3,
+    _5_4 = ffi::edid::di_edid_standard_timing_aspect_ratio_DI_EDID_STANDARD_TIMING_5_4,
+    _16_9 = ffi::edid::di_edid_standard_timing_aspect_ratio_DI_EDID_STANDARD_TIMING_16_9,
+}
+
+impl From<ffi::edid::di_edid_standard_timing_aspect_ratio> for StandardTimingAspectRatio {
+    fn from(value: ffi::edid::di_edid_standard_timing_aspect_ratio) -> Self {
+        use StandardTimingAspectRatio::*;
+        match value {
+            ffi::edid::di_edid_standard_timing_aspect_ratio_DI_EDID_STANDARD_TIMING_16_10 => _16_10,
+            ffi::edid::di_edid_standard_timing_aspect_ratio_DI_EDID_STANDARD_TIMING_4_3 => _4_3,
+            ffi::edid::di_edid_standard_timing_aspect_ratio_DI_EDID_STANDARD_TIMING_5_4 => _5_4,
+            ffi::edid::di_edid_standard_timing_aspect_ratio_DI_EDID_STANDARD_TIMING_16_9 => _16_9,
+            _ => unreachable!(),
+        }
+    }
+}
+
+// EDID standard timing, defined in section 3.9
+#[derive(Debug)]
+#[repr(transparent)]
+pub struct StandardTiming(*const ffi::edid::di_edid_standard_timing);
+
+impl StandardTiming {
+    pub fn horiz_video(&self) -> i32 {
+        unsafe { (*self.0).horiz_video }
+    }
+
+    pub fn aspect_ratio(&self) -> StandardTimingAspectRatio {
+        StandardTimingAspectRatio::from(unsafe { (*self.0).aspect_ratio })
+    }
+
+    pub fn refresh_rate_hz(&self) -> i32 {
+        unsafe { (*self.0).refresh_rate_hz }
+    }
+
+    /// Get the vertical addressable line count of an EDID standard timing.
+    pub fn vert_video(&self) -> i32 {
+        unsafe { ffi::edid::di_edid_standard_timing_get_vert_video(self.0) }
+    }
+
+    /// Get the VESA Display Monitor Timing (DMT), if any.
+    ///
+    /// `None` is returned if the standard timing doesn't have a DMT.
+    pub fn dmt(&self) -> Option<crate::dmt::Timing> {
+        let dmt = unsafe { ffi::edid::di_edid_standard_timing_get_dmt(self.0) };
+
+        if dmt.is_null() {
+            None
+        } else {
+            Some(crate::dmt::Timing::from(unsafe {
+                *(dmt as *const ffi::dmt::di_dmt_timing)
+            }))
         }
     }
 }

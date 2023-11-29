@@ -3,6 +3,7 @@ use std::ffi::CStr;
 pub use libdisplay_info_sys as ffi;
 
 pub mod cta;
+pub mod dmt;
 pub mod edid;
 pub mod info;
 
