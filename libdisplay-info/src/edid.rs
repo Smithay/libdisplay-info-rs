@@ -2,6 +2,7 @@ use std::marker::PhantomData;
 
 use crate::ffi;
 
+/// EDID data structure.
 #[derive(Debug)]
 pub struct Edid<'info> {
     edid: *const ffi::edid::di_edid,
@@ -29,6 +30,7 @@ impl<'info> Edid<'info> {
     }
 }
 
+/// EDID extension block tags, defined in section 2.2.4.
 #[derive(Debug, PartialEq, Eq)]
 #[repr(u32)]
 pub enum ExtensionTag {
@@ -64,6 +66,7 @@ impl From<u32> for ExtensionTag {
 pub struct Extension(*const ffi::edid::di_edid_ext);
 
 impl Extension {
+    /// Get the tag of an EDID extension block.
     pub fn tag(&self) -> ExtensionTag {
         unsafe { ffi::edid::di_edid_ext_get_tag(self.0) }.into()
     }
