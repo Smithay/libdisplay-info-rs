@@ -16,7 +16,7 @@ pub struct ParseFailed;
 
 impl Info {
     /// Parse an EDID blob.
-    pub fn parse(data: &[u8]) -> Result<Self, ParseFailed> {
+    pub fn parse_edid(data: &[u8]) -> Result<Self, ParseFailed> {
         let info = unsafe {
             ffi::info::di_info_parse_edid(data.as_ptr() as *const std::ffi::c_void, data.len())
         };
@@ -43,11 +43,11 @@ impl Info {
 
     /// Returns the EDID the display device information was constructed with.
     ///
-    /// The returned struct di_edid can be used to query low-level EDID information,
-    /// see [Edid](crate::edid). Users should prefer the high-level API if
+    /// The returned [`Edid`] can be used to query low-level EDID information,
+    /// see [`edid`](crate::edid) module level docs. Users should prefer the high-level API if
     /// possible.
     ///
-    /// `None` is returned if the struct [`Info`] doesn't contain an EDID.
+    /// `None` is returned if the [`Info`] doesn't contain an EDID.
     pub fn edid(&self) -> Option<Edid<'_>> {
         let edid = unsafe { ffi::info::di_info_get_edid(self.0) };
 
