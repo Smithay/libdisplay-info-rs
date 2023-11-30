@@ -2,7 +2,7 @@ use libdisplay_info::{cta::CTA, edid::ExtensionTag, info::Info};
 
 fn main() {
     let edid = std::fs::read("/home/cmeissl/Documents/EDIDs/AOC-2260").unwrap();
-    let info = Info::parse(&edid).expect("failed to parse edid");
+    let info = Info::parse_edid(&edid).expect("failed to parse edid");
     if let Some(failure_message) = info.failure_msg() {
         eprintln!("{:?}", failure_message);
     }
