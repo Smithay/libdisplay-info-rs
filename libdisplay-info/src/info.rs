@@ -1,10 +1,11 @@
+//! High-level API.
 use crate::{edid::Edid, ffi, string_from_owned_ffi_ptr};
 
 /// Information about a display device.
 ///
 /// This includes at least one EDID or DisplayID blob.
 ///
-/// Use [`Info::parse`](Info::parse_edid) to create a [`Info`] from an EDID blob.
+/// Use [`Info::parse_edid`](Info::parse_edid) to create a [`Info`] from an EDID blob.
 /// DisplayID blobs are not yet supported.
 #[derive(Debug)]
 pub struct Info(*mut ffi::info::di_info);
@@ -16,7 +17,7 @@ pub struct ParseFailed;
 
 impl Info {
     /// Parse an EDID blob.
-    pub fn parse(data: &[u8]) -> Result<Self, ParseFailed> {
+    pub fn parse_edid(data: &[u8]) -> Result<Self, ParseFailed> {
         let info = unsafe {
             ffi::info::di_info_parse_edid(data.as_ptr() as *const std::ffi::c_void, data.len())
         };
@@ -43,19 +44,13 @@ impl Info {
 
     /// Returns the EDID the display device information was constructed with.
     ///
-    /// The returned struct di_edid can be used to query low-level EDID information,
-    /// see [Edid](crate::edid). Users should prefer the high-level API if
+    /// The returned [`Edid`] can be used to query low-level EDID information,
+    /// see [`edid`](crate::edid) module level docs. Users should prefer the high-level API if
     /// possible.
     ///
-    /// `None` is returned if the struct [`Info`] doesn't contain an EDID.
+    /// `None` is returned if the [`Info`] doesn't contain an EDID.
     pub fn edid(&self) -> Option<Edid<'_>> {
-        let edid = unsafe { ffi::info::di_info_get_edid(self.0) };
-
-        if edid.is_null() {
-            None
-        } else {
-            Some(unsafe { Edid::from_ptr(edid as *const ffi::edid::di_edid) })
-        }
+        Edid::from_ptr(unsafe { ffi::info::di_info_get_edid(self.0) as *const ffi::edid::di_edid })
     }
 
     /// Get the make of the display device.
