@@ -10,3 +10,4 @@ libdisplay-info-sys = { version = "0.1.0", path = "../libdisplay-info-sys" }
 libc = "0.2.149"
 thiserror = "1.0.50"
 libdisplay-info-derive = { version = "0.1.0", path = "../libdisplay-info-derive" }
+bitflags = "2.2"

@@ -1,10 +1,11 @@
+//! High-level API.
 use crate::{edid::Edid, ffi, string_from_owned_ffi_ptr};
 
 /// Information about a display device.
 ///
 /// This includes at least one EDID or DisplayID blob.
 ///
-/// Use [`Info::parse`](Info::parse_edid) to create a [`Info`] from an EDID blob.
+/// Use [`Info::parse_edid`](Info::parse_edid) to create a [`Info`] from an EDID blob.
 /// DisplayID blobs are not yet supported.
 #[derive(Debug)]
 pub struct Info(*mut ffi::info::di_info);
@@ -49,13 +50,7 @@ impl Info {
     ///
     /// `None` is returned if the [`Info`] doesn't contain an EDID.
     pub fn edid(&self) -> Option<Edid<'_>> {
-        let edid = unsafe { ffi::info::di_info_get_edid(self.0) };
-
-        if edid.is_null() {
-            None
-        } else {
-            Some(unsafe { Edid::from_ptr(edid as *const ffi::edid::di_edid) })
-        }
+        Edid::from_ptr(unsafe { ffi::info::di_info_get_edid(self.0) as *const ffi::edid::di_edid })
     }
 
     /// Get the make of the display device.
