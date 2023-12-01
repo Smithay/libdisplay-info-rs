@@ -1,9 +1,17 @@
 use crate::{edid::Edid, ffi, string_from_owned_ffi_ptr};
 
+/// Information about a display device.
+///
+/// This includes at least one EDID or DisplayID blob.
+///
+/// Use [`Info::parse`](Info::parse_edid) to create a [`Info`] from an EDID blob.
+/// DisplayID blobs are not yet supported.
 #[derive(Debug)]
 pub struct Info(*mut ffi::info::di_info);
 
-#[derive(Debug)]
+/// Parsing the EDID blob failed
+#[derive(Debug, thiserror::Error)]
+#[error("Parsing the EDID blob failed")]
 pub struct ParseFailed;
 
 impl Info {

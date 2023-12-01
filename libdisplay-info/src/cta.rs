@@ -2,6 +2,7 @@ use std::marker::PhantomData;
 
 use crate::{edid::Extension, ffi};
 
+/// EDID CTA-861 extension block.
 #[derive(Debug)]
 pub struct CTA<'ext> {
     cta: *const ffi::cta::di_edid_cta,
@@ -32,6 +33,9 @@ impl<'ext> CTA<'ext> {
     }
 }
 
+/// Miscellaneous EDID CTA flags, defined in section 7.3.3.
+///
+/// For CTA revision 1, all of the fields are zero.
 #[derive(Debug)]
 pub struct Flags {
     pub it_underscan: bool,
