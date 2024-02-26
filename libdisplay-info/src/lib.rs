@@ -1,4 +1,7 @@
-use std::{ffi::CStr, marker::PhantomData};
+use std::{
+    ffi::{c_char, CStr},
+    marker::PhantomData,
+};
 
 pub use libdisplay_info_sys as ffi;
 
@@ -13,7 +16,7 @@ pub mod info;
 /// Get the [`String`] from an owned ffi ptr
 ///
 /// This will automatically free the ptr
-fn string_from_ffi_ptr(ptr: *const i8) -> Option<String> {
+fn string_from_ffi_ptr(ptr: *const c_char) -> Option<String> {
     if ptr.is_null() {
         None
     } else {
@@ -26,7 +29,7 @@ fn string_from_ffi_ptr(ptr: *const i8) -> Option<String> {
 /// This will automatically free the ptr
 ///
 /// `None` is returned for NULL ptr
-fn string_from_owned_ffi_ptr(ptr: *mut i8) -> Option<String> {
+fn string_from_owned_ffi_ptr(ptr: *mut c_char) -> Option<String> {
     let res = string_from_ffi_ptr(ptr);
     if res.is_some() {
         unsafe {
