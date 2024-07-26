@@ -1,0 +1,139 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  format:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+      - name: Cargo cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: ${{ runner.os }}-cargo-rust_stable-${{ hashFiles('**/Cargo.toml') }}
+      - name: Format
+        run: cargo fmt --all -- --check
+
+  clippy-check:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - name: Cargo cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: ${{ runner.os }}-cargo-rust_stable-${{ hashFiles('**/Cargo.toml') }}
+      - name: Build cache
+        uses: actions/cache@v2
+        with:
+          path: target
+          key: ${{ runner.os }}-build-rust_stable-check-${{ hashFiles('**/Cargo.toml') }}
+      - name: System dependencies
+        run: sudo apt-get update; sudo apt-get install libdisplay-info-dev
+      - name: Clippy
+        run: cargo clippy --all --all-features --all-targets -- -D warnings
+
+  check-minimal:
+    env:
+      RUSTFLAGS: "-D warnings"
+
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Rust toolchain
+        uses: dtolnay/rust-toolchain@nightly
+      - name: Cargo cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: ${{ runner.os }}-cargo-rust_nightly-${{ hashFiles('**/Cargo.toml') }}
+      - name: System dependencies
+        run: sudo apt-get update; sudo apt-get install libdisplay-info-dev
+      - name: Downgrade to minimal dependencies
+        run: cargo update -Z minimal-versions
+      - name: Check
+        run: cargo check --all
+
+  check-msrv:
+    env:
+      RUSTFLAGS: "-D warnings"
+
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Rust toolchain
+        uses: dtolnay/rust-toolchain@1.65
+      - name: Cargo cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: ${{ runner.os }}-cargo-rust_1.65-${{ hashFiles('**/Cargo.toml') }}
+      - name: System dependencies
+        run: sudo apt-get update; sudo apt-get install libdisplay-info-dev
+      - name: Check
+        run: cargo check --all
+
+  test:
+    needs:
+      - format
+      - clippy-check
+    strategy:
+      fail-fast: false
+      matrix:
+        features:
+        - ''
+
+    env:
+      RUSTFLAGS: "-D warnings"
+
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Cargo cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: ${{ runner.os }}-cargo-rust_stable-${{ hashFiles('**/Cargo.toml') }}
+      - name: Rust toolchain
+        uses: dtolnay/rust-toolchain@stable    
+      - name: System dependencies
+        run: sudo apt-get update; sudo apt-get install libdisplay-info-dev
+      - name: Build cache
+        uses: actions/cache@v2
+        with:
+          path: target
+          key: ${{ runner.os }}-build-rust_stable-feature_${{ matrix.features }}-${{ hashFiles('**/Cargo.toml') }}
+      - name: Test features
+        run: cargo test --no-default-features --features "${{ matrix.features }}"
