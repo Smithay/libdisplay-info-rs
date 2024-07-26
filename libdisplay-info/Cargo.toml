@@ -15,10 +15,10 @@ readme = "../README.md"
 
 [dependencies]
 libdisplay-info-sys = { version = "0.1.0", path = "../libdisplay-info-sys" }
-libc = "0.2.149"
-thiserror = "1.0.50"
+libc = "0.2.155"
+thiserror = "1.0.63"
 libdisplay-info-derive = { version = "0.1.0", path = "../libdisplay-info-derive" }
-bitflags = "2.2"
+bitflags = "2.6"
 
 [dev-dependencies]
 anyhow = "1.0"
