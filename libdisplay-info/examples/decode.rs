@@ -99,7 +99,7 @@ fn print_edid(edid: &Edid<'_>) {
         if video_input_analog.sync_serrations {
             print!(" Serration");
         }
-        print!("\n");
+        println!();
     }
     let video_input_digital = edid.video_input_digital();
     if let Some(video_input_digital) = video_input_digital.as_ref() {
@@ -145,7 +145,7 @@ fn print_edid(edid: &Edid<'_>) {
         if dpms.off {
             print!(" Off");
         }
-        print!("\n");
+        println!();
     }
 
     if video_input_digital.is_none() || edid.revision() < 4 {
@@ -161,7 +161,7 @@ fn print_edid(edid: &Edid<'_>) {
         if color_encoding_formats.ycrcb422 {
             print!(", YCrCb 4:2:2");
         }
-        print!("\n");
+        println!();
     }
 
     let misc_features = edid.misc_features();
@@ -206,7 +206,7 @@ fn print_edid(edid: &Edid<'_>) {
     if !has_established_timings(&established_timings_i_ii) {
         print!(" none");
     }
-    print!("\n");
+    println!();
     if established_timings_i_ii.has_720x400_70hz {
         println!("    IBM     :   720x400    70.081663 Hz   9:5     31.467 kHz     28.320000 MHz");
     }
@@ -263,7 +263,7 @@ fn print_edid(edid: &Edid<'_>) {
     if edid.standard_timings().is_empty() {
         print!(" none");
     }
-    print!("\n");
+    println!();
     for standard_timing in edid.standard_timings() {
         print_standard_timing(standard_timing);
     }
@@ -274,7 +274,7 @@ fn print_edid(edid: &Edid<'_>) {
     }
 
     for display_descriptor in edid.display_descriptors() {
-        print_display_desc(&edid, display_descriptor);
+        print_display_desc(edid, display_descriptor);
     }
 }
 
@@ -340,7 +340,7 @@ fn print_standard_timing(timing_ref: &StandardTimingRef) {
     if dmt.map(|dmt| dmt.reduced_blanking).unwrap_or(false) {
         print!(" (RB)");
     }
-    print!("\n");
+    println!();
 }
 
 fn print_detailed_timing_def(index: usize, def: DetailedTimingDef) {
@@ -391,7 +391,7 @@ fn print_detailed_timing_def(index: usize, def: DetailedTimingDef) {
     // 	print!(" (%s)", flags_str);
     // 	free(flags_str);
     // }
-    print!("\n");
+    println!();
 
     let horiz_back_porch = hbl - def.horiz_sync_pulse - def.horiz_front_porch;
     print!(
@@ -412,7 +412,7 @@ fn print_detailed_timing_def(index: usize, def: DetailedTimingDef) {
             def.digital_separate.unwrap().sync_horiz_polarity
         );
     }
-    print!("\n");
+    println!();
 
     let vert_back_porch = vbl - def.vert_sync_pulse - def.vert_front_porch;
     print!(
@@ -428,7 +428,7 @@ fn print_detailed_timing_def(index: usize, def: DetailedTimingDef) {
             def.digital_separate.unwrap().sync_vert_polarity
         );
     }
-    print!("\n");
+    println!();
 }
 
 fn print_display_desc(edid: &Edid<'_>, desc_ref: &DisplayDescriptorRef) {
@@ -463,7 +463,7 @@ fn print_display_desc(edid: &Edid<'_>, desc_ref: &DisplayDescriptorRef) {
             if let Some(max_pixel_clock_hz) = range_limits.max_pixel_clock_hz {
                 print!(", max dotclock {} MHz", max_pixel_clock_hz / (1000 * 1000));
             }
-            print!("\n");
+            println!();
 
             match range_limits_type {
                 DisplayRangeLimitsType::SecondaryGtf => {
@@ -502,7 +502,7 @@ fn print_display_desc(edid: &Edid<'_>, desc_ref: &DisplayDescriptorRef) {
                     if cvt.supported_aspect_ratio.contains(CvtAspectRatio::_15_9) {
                         print!(" 15:9");
                     }
-                    print!("\n");
+                    println!();
 
                     println!(
                         "      Preferred aspect ratio: {:?}",
@@ -543,7 +543,7 @@ fn print_display_desc(edid: &Edid<'_>, desc_ref: &DisplayDescriptorRef) {
         edid::DisplayDescriptorTag::StdTimingIds => {
             let standard_timing = desc_ref.standard_timings().unwrap();
 
-            print!("\n");
+            println!();
             for timing in standard_timing {
                 print_standard_timing(timing);
             }
@@ -555,7 +555,7 @@ fn print_display_desc(edid: &Edid<'_>, desc_ref: &DisplayDescriptorRef) {
             }
         }
         edid::DisplayDescriptorTag::EstablishedTimingsIII => {
-            print!("\n");
+            println!();
             for timing in desc_ref.established_timings_iii() {
                 print_dmt_timing(timing);
             }
@@ -572,13 +572,13 @@ fn print_display_desc(edid: &Edid<'_>, desc_ref: &DisplayDescriptorRef) {
             println!("      Blue a2 : {:.2}", color_management_data.blue_a2);
         }
         edid::DisplayDescriptorTag::CvtTimingCodes => {
-            print!("\n");
+            println!();
 
             for timing_code in desc_ref.cvt_timing_codes() {
                 print_cvt_timing_code(timing_code);
             }
         }
-        _ => print!("\n"),
+        _ => println!(),
     };
 }
 
@@ -622,7 +622,7 @@ fn print_dmt_timing(t: dmt::Timing) {
     if t.reduced_blanking {
         print!(" (RB)");
     }
-    print!("\n");
+    println!();
 }
 
 fn print_cvt_timing_code(t: CvtTimingCode) {
@@ -731,16 +731,15 @@ fn print_cvt_timing(
     let hbl = t.h_front_porch + t.h_sync + t.h_back_porch;
     let htotal = t.total_active_pixels + hbl;
 
-    print!(
-        "      CVT: {:5}x{:-5}",
-        options.h_pixels as i32, options.v_lines as i32
-    );
+    print!("      CVT: {:5}x{:-5}", { options.h_pixels }, {
+        options.v_lines
+    });
     print!(" {:10.6} Hz", t.act_frame_rate);
     print!(" {:3}:{:-3}", hratio, vratio);
     print!(
         " {:8.3} kHz {:13.6} MHz",
         t.act_pixel_freq * 1000f64 / htotal,
-        t.act_pixel_freq as f64
+        { t.act_pixel_freq }
     );
 
     if preferred && rb {
@@ -751,7 +750,7 @@ fn print_cvt_timing(
         print!(" (RB)");
     }
 
-    print!("\n");
+    println!();
 }
 
 fn print_ext(ext: &ExtensionRef, ext_index: usize) {
@@ -808,75 +807,77 @@ fn print_cta(cta: CTA<'_>) {
                 let speaker_alloc = data_block.speaker_alloc().unwrap();
 
                 if speaker_alloc.flw_frw {
-                    print!("    FLw/FRw - Front Left/Right Wide\n");
+                    println!("    FLw/FRw - Front Left/Right Wide");
                 }
                 if speaker_alloc.flc_frc {
-                    print!("    FLc/FRc - Front Left/Right of Center\n");
+                    println!("    FLc/FRc - Front Left/Right of Center");
                 }
                 if speaker_alloc.bc {
-                    print!("    BC - Back Center\n");
+                    println!("    BC - Back Center");
                 }
                 if speaker_alloc.bl_br {
-                    print!("    BL/BR - Back Left/Right\n");
+                    println!("    BL/BR - Back Left/Right");
                 }
                 if speaker_alloc.fc {
-                    print!("    FC - Front Center\n");
+                    println!("    FC - Front Center");
                 }
                 if speaker_alloc.lfe1 {
-                    print!("    LFE1 - Low Frequency Effects 1\n");
+                    println!("    LFE1 - Low Frequency Effects 1");
                 }
                 if speaker_alloc.fl_fr {
-                    print!("    FL/FR - Front Left/Right\n");
+                    println!("    FL/FR - Front Left/Right");
                 }
                 if speaker_alloc.tpsil_tpsir {
-                    print!("    TpSiL/TpSiR - Top Side Left/Right\n");
+                    println!("    TpSiL/TpSiR - Top Side Left/Right");
                 }
                 if speaker_alloc.sil_sir {
-                    print!("    SiL/SiR - Side Left/Right\n");
+                    println!("    SiL/SiR - Side Left/Right");
                 }
                 if speaker_alloc.tpbc {
-                    print!("    TpBC - Top Back Center\n");
+                    println!("    TpBC - Top Back Center");
                 }
                 if speaker_alloc.lfe2 {
-                    print!("    LFE2 - Low Frequency Effects 2\n");
+                    println!("    LFE2 - Low Frequency Effects 2");
                 }
                 if speaker_alloc.ls_rs {
-                    print!("    LS/RS - Left/Right Surround\n");
+                    println!("    LS/RS - Left/Right Surround");
                 }
                 if speaker_alloc.tpfc {
-                    print!("    TpFC - Top Front Center\n");
+                    println!("    TpFC - Top Front Center");
                 }
                 if speaker_alloc.tpc {
-                    print!("    TpC - Top Center\n");
+                    println!("    TpC - Top Center");
                 }
                 if speaker_alloc.tpfl_tpfr {
-                    print!("    TpFL/TpFR - Top Front Left/Right\n");
+                    println!("    TpFL/TpFR - Top Front Left/Right");
                 }
                 if speaker_alloc.btfl_btfr {
-                    print!("    BtFL/BtFR - Bottom Front Left/Right\n");
+                    println!("    BtFL/BtFR - Bottom Front Left/Right");
                 }
                 if speaker_alloc.btfc {
-                    print!("    BtFC - Bottom Front Center\n");
+                    println!("    BtFC - Bottom Front Center");
                 }
                 if speaker_alloc.tpbl_tpbr {
-                    print!("    TpBL/TpBR - Top Back Left/Right\n");
+                    println!("    TpBL/TpBR - Top Back Left/Right");
                 }
             }
             cta::DataBlockTag::VideoCap => {
                 let video_cap = data_block.video_cap().unwrap();
                 println!(
                     "    YCbCr quantization: {}",
-                    video_cap
-                        .selectable_ycc_quantization_range
-                        .then_some("Selectable (via AVI YQ)")
-                        .unwrap_or("No Data")
+                    if video_cap.selectable_ycc_quantization_range {
+                        "Selectable (via AVI YQ)"
+                    } else {
+                        "No Data"
+                    }
                 );
                 println!(
                     "    RGB quantization: {}",
-                    video_cap
-                        .selectable_rgb_quantization_range
-                        .then_some("Selectable (via AVI Q)")
-                        .unwrap_or("No Data")
+                    if video_cap.selectable_rgb_quantization_range {
+                        "Selectable (via AVI Q)"
+                    } else {
+                        "No Data"
+                    }
                 );
                 println!(
                     "    PT scan behavior: {}",
@@ -904,34 +905,34 @@ fn print_cta(cta: CTA<'_>) {
             cta::DataBlockTag::Colorimetry => {
                 let colorimetry = data_block.colorimetry().unwrap();
                 if colorimetry.xvycc_601 {
-                    print!("    xvYCC601\n");
+                    println!("    xvYCC601");
                 }
                 if colorimetry.xvycc_709 {
-                    print!("    xvYCC709\n");
+                    println!("    xvYCC709");
                 }
                 if colorimetry.sycc_601 {
-                    print!("    sYCC601\n")
+                    println!("    sYCC601")
                 }
                 if colorimetry.opycc_601 {
-                    print!("    opYCC601\n");
+                    println!("    opYCC601");
                 }
                 if colorimetry.oprgb {
-                    print!("    opRGB\n");
+                    println!("    opRGB");
                 }
                 if colorimetry.bt2020_cycc {
-                    print!("    BT2020cYCC\n");
+                    println!("    BT2020cYCC");
                 }
                 if colorimetry.bt2020_ycc {
-                    print!("    BT2020YCC\n");
+                    println!("    BT2020YCC");
                 }
                 if colorimetry.bt2020_rgb {
-                    print!("    BT2020RGB\n");
+                    println!("    BT2020RGB");
                 }
                 if colorimetry.ictcp {
-                    print!("    ICtCp\n");
+                    println!("    ICtCp");
                 }
                 if colorimetry.st2113_rgb {
-                    print!("    ST2113RGB\n");
+                    println!("    ST2113RGB");
                 }
             }
             cta::DataBlockTag::HdrStaticMetadata => {
@@ -1021,7 +1022,7 @@ fn print_cta_svd(svd: cta::Svd) {
     if svd.native {
         print!(" (native)");
     }
-    print!("\n");
+    println!();
 }
 
 fn print_vic(vic: u8) {
@@ -1211,7 +1212,7 @@ fn print_cta_sad(sad: cta::Sad) {
         if supported_sample_rates.has_32_khz {
             print!(" 32");
         }
-        print!("\n");
+        println!();
     }
 
     if let Some(lpcm) = sad.lpcm {
@@ -1225,7 +1226,7 @@ fn print_cta_sad(sad: cta::Sad) {
         if lpcm.has_sample_size_16_bits {
             print!(" 16");
         }
-        print!("\n");
+        println!();
     }
 
     if let Some(max_bitrate_kbs) = sad.max_bitrate_kbs {
@@ -1246,9 +1247,11 @@ fn print_cta_sad(sad: cta::Sad) {
             println!("      Supports Dolby TrueHD, object audio PCM and channel-based PCM");
             println!(
                 "      Hash calculation {}required for object audio PCM or channel-based PCM",
-                mat.requires_hash_calculation
-                    .then_some("")
-                    .unwrap_or("not ")
+                if mat.requires_hash_calculation {
+                    ""
+                } else {
+                    "not "
+                }
             );
         } else {
             println!("      Supports only Dolby TrueHD");
@@ -1309,7 +1312,7 @@ fn print_cta_vesa_dddb(dddb: cta::VesaDddb) {
         };
         print!(" {} {}", num_channels, kind);
     }
-    print!("\n");
+    println!();
 
     println!(
         "    Interface Standard Version: {}.{}",
@@ -1346,7 +1349,7 @@ fn print_cta_vesa_dddb(dddb: cta::VesaDddb) {
     println!("    Dithering: {:?}", dddb.dithering_type);
     println!(
         "    Direct Drive: {}",
-        dddb.direct_drive.then_some("Yes").unwrap_or("No")
+        if dddb.direct_drive { "Yes" } else { "No" }
     );
     println!(
         "    Overdrive {}recommended",
@@ -1356,20 +1359,28 @@ fn print_cta_vesa_dddb(dddb: cta::VesaDddb) {
     );
     println!(
         "    Deinterlacing: {}",
-        dddb.deinterlacing.then_some("Yes").unwrap_or("No")
+        if dddb.deinterlacing { "Yes" } else { "No" }
     );
 
     println!(
         "    Audio Support: {}",
-        dddb.audio_support.then_some("Yes").unwrap_or("No")
+        if dddb.audio_support { "Yes" } else { "No" }
     );
     println!(
         "    Separate Audio Inputs Provided: {}",
-        dddb.separate_audio_inputs.then_some("Yes").unwrap_or("No")
+        if dddb.separate_audio_inputs {
+            "Yes"
+        } else {
+            "No"
+        }
     );
     println!(
         "    Audio Input Override: {}",
-        dddb.audio_input_override.then_some("Yes").unwrap_or("No")
+        if dddb.audio_input_override {
+            "Yes"
+        } else {
+            "No"
+        }
     );
     if dddb.audio_delay_provided {
         println!("    Audio Delay: {} ms", dddb.audio_delay_ms);
@@ -1428,7 +1439,7 @@ fn print_cta_vesa_transfer_characteristics(tf: cta::VesaTransferCharacteristics)
     for point in tf.points.iter().take(tf.points_len as usize) {
         print!(" {}", f32::round(point * 1023f32) as u16);
     }
-    print!("\n");
+    println!();
 }
 
 fn print_ycbcr420_cap_map(cta: &cta::CTA<'_>, map: cta::Ycbcr420CapMapRef) {
@@ -1534,21 +1545,21 @@ fn print_displayid_type_i_timing(t: displayid::TypeITiming) {
     if t.preferred {
         print!(", preferred");
     }
-    print!(")\n");
+    println!(")");
 
     let horiz_back_porch = t.horiz_blank - t.horiz_sync_width - t.horiz_offset;
     print!(
         "               Hfront {:4} Hsync {:3} Hback {:4} Hpol {:?}",
         t.horiz_offset, t.horiz_sync_width, horiz_back_porch, t.horiz_sync_polarity
     );
-    print!("\n");
+    println!();
 
     let vert_back_porch = t.vert_blank - t.vert_sync_width - t.vert_offset;
     print!(
         "               Vfront {:4} Vsync {:3} Vback {:4} Vpol {:?}",
         t.vert_offset, t.vert_sync_width, vert_back_porch, t.vert_sync_polarity
     );
-    print!("\n");
+    println!();
 }
 
 fn displayid_type_i_timing_aspect_ratio(ratio: displayid::TypeITimingAspectRatio) -> (i32, i32) {

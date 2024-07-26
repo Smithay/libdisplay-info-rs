@@ -71,7 +71,6 @@ pub fn ffi_from_fn(input: TokenStream) -> TokenStream {
                         };
 
                         let vals = (0..num)
-                            .into_iter()
                             .map(|idx| {
                                 if let Some(cast_as) = field.cast_as.as_ref() {
                                     quote! {
@@ -92,10 +91,7 @@ pub fn ffi_from_fn(input: TokenStream) -> TokenStream {
                         }
                     } else {
                         let ty = field.ty;
-                        let is_option = match ty {
-                            Type::Path(ref path) if path.path.segments[0].ident == "Option" => true,
-                            _ => false,
-                        };
+                        let is_option = matches!(ty, Type::Path(ref path) if path.path.segments[0].ident == "Option");
 
                         if !is_option && field.optional.is_some() {
                             return Err(syn::Error::new(
@@ -318,8 +314,7 @@ impl Parse for FFIFrom {
 
         let wrap = attributes
             .iter()
-            .find(|attr| attr.path().segments[0].ident == "wrap")
-            .is_some();
+            .any(|attr| attr.path().segments[0].ident == "wrap");
 
         input.parse::<Visibility>()?;
 
@@ -386,8 +381,7 @@ fn parse_ffi_struct_field(input: ParseStream) -> Result<FFIStructField> {
 
     let ptr_deref = attributes
         .iter()
-        .find(|attr| attr.path().segments[0].ident == "ptr_deref")
-        .is_some();
+        .any(|attr| attr.path().segments[0].ident == "ptr_deref");
 
     let optional = if let Some(optional) = optional {
         Some(optional.parse_args::<Expr>()?)
