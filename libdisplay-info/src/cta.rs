@@ -290,6 +290,7 @@ pub enum DataBlockTag {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, FFIFrom)]
 #[ffi(ffi::cta::di_cta_audio_format)]
 #[repr(u32)]
+#[allow(non_camel_case_types)]
 pub enum AudioFormat {
     LPCM = ffi::cta::di_cta_audio_format_DI_CTA_AUDIO_FORMAT_LPCM,
     AC3 = ffi::cta::di_cta_audio_format_DI_CTA_AUDIO_FORMAT_AC3,
@@ -388,6 +389,7 @@ pub struct SadLpcm {
 
 #[derive(Debug, Copy, Clone, FFIFrom)]
 #[ffi(ffi::cta::di_cta_sad_enhanced_ac3)]
+#[allow(non_snake_case)]
 pub struct SadEnhancedAc3 {
     pub supports_joint_object_coding: bool,
     pub supports_joint_object_coding_ACMOD28: bool,
@@ -492,6 +494,7 @@ pub struct VideoCapBlock {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, FFIFrom)]
 #[ffi(ffi::cta::di_cta_vesa_dddb_interface_type)]
 #[repr(u32)]
+#[allow(non_camel_case_types)]
 pub enum VesaDddbInterfaceType {
     VGA = ffi::cta::di_cta_vesa_dddb_interface_type_DI_CTA_VESA_DDDB_INTERFACE_VGA,
     NAVI_V = ffi::cta::di_cta_vesa_dddb_interface_type_DI_CTA_VESA_DDDB_INTERFACE_NAVI_V,
@@ -537,6 +540,7 @@ pub enum VesaDddbDefaultOrientation {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, FFIFrom)]
 #[ffi(ffi::cta::di_cta_vesa_dddb_rotation_cap)]
 #[repr(u32)]
+#[allow(non_camel_case_types)]
 pub enum VesaDddbRotationCap {
     None = ffi::cta::di_cta_vesa_dddb_rotation_cap_DI_CTA_VESA_DDDB_ROTATION_CAP_NONE,
     _90DEG_CLOCKWISE =
@@ -576,6 +580,7 @@ pub enum VesaDddbScanDirection {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, FFIFrom)]
 #[ffi(ffi::cta::di_cta_vesa_dddb_subpixel_layout)]
 #[repr(u32)]
+#[allow(non_camel_case_types)]
 pub enum VesaDddbSubpixelLayout {
     Undefined = ffi::cta::di_cta_vesa_dddb_subpixel_layout_DI_CTA_VESA_DDDB_SUBPIXEL_UNDEFINED,
     RGB_VERT = ffi::cta::di_cta_vesa_dddb_subpixel_layout_DI_CTA_VESA_DDDB_SUBPIXEL_RGB_VERT,
