@@ -45,7 +45,7 @@ struct FFIIter<'a, T, F> {
     phantom: PhantomData<&'a ()>,
 }
 
-impl<'a, T, F> FFIIter<'a, T, F> {
+impl<T, F> FFIIter<'_, T, F> {
     fn new(ptr: *const *const F) -> Self {
         Self {
             ptr,
@@ -55,7 +55,7 @@ impl<'a, T, F> FFIIter<'a, T, F> {
     }
 }
 
-impl<'a, T, F> Iterator for FFIIter<'a, T, F>
+impl<T, F> Iterator for FFIIter<'_, T, F>
 where
     T: From<F>,
     F: Copy,
