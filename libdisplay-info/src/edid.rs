@@ -716,8 +716,8 @@ pub struct DisplayRangeLimits {
     pub max_vert_rate_hz: i32,
     pub min_horiz_rate_hz: i32,
     pub max_horiz_rate_hz: i32,
-    #[optional(0i32)]
-    pub max_pixel_clock_hz: Option<i32>,
+    #[optional(0)]
+    pub max_pixel_clock_hz: Option<i64>,
     pub type_: DisplayRangeLimitsType,
     #[ptr_deref]
     pub secondary_gtf: Option<DisplayRangeLimitsSecondaryGtf>,
