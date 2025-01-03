@@ -15,7 +15,7 @@ pub struct Edid<'info> {
     phantom: PhantomData<&'info ()>,
 }
 
-impl<'info> Edid<'info> {
+impl Edid<'_> {
     /// Get the EDID version.
     pub fn version(&self) -> i32 {
         unsafe { ffi::edid::di_edid_get_version(self.edid) }
