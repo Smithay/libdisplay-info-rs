@@ -1,3 +1,3 @@
 fn main() {
-    println!("cargo:rustc-link-lib=display-info");
+    system_deps::Config::new().probe().unwrap();
 }

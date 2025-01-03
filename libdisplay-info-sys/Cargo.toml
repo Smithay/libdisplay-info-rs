@@ -4,7 +4,7 @@ categories = ["api-bindings"]
 description = "Low-level bindings for libdisplay-info."
 documentation = "https://docs.rs/libdisplay-info-sys/"
 edition = "2021"
-version = "0.1.0"
+version = "0.1.1"
 keywords = ["libdisplay", "DisplayID", "EDID"]
 license = "MIT"
 name = "libdisplay-info-sys"
@@ -13,4 +13,9 @@ readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[dependencies]
+[build-dependencies]
+system-deps = "7.0.3"
+
+[package.metadata.system-deps.libdisplay-info]
+name = "libdisplay-info"
+version = ">= 0.1.0, < 0.2.0"
