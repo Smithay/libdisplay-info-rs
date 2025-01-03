@@ -19,7 +19,7 @@ v0_2 = ["libdisplay-info-sys/v0_2"]
 [dependencies]
 libdisplay-info-sys = { version = "0.2.0", path = "../libdisplay-info-sys" }
 libc = "0.2.155"
-thiserror = "1.0.63"
+thiserror = "2.0.9"
 libdisplay-info-derive = { version = "0.1.0", path = "../libdisplay-info-derive" }
 bitflags = "2.6"
 
