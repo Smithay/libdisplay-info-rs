@@ -245,6 +245,55 @@ impl DataBlockRef {
     pub fn infoframe(&self) -> Option<InfoframeBlockRef> {
         InfoframeBlockRef::from_ptr(unsafe { ffi::cta::di_cta_data_block_get_infoframe(self.0) })
     }
+
+    /// Get the HDMI Audio information from a CTA data block.
+    ///
+    /// Returns `None` if the data block tag is not DI_CTA_DATA_BLOCK_HDMI_AUDIO.
+    #[cfg(feature = "v0_2")]
+    pub fn hdmi_audio(&self) -> Option<HdmiAudioBlockRef> {
+        HdmiAudioBlockRef::from_ptr(unsafe { ffi::cta::di_cta_data_block_get_hdmi_audio(self.0) })
+    }
+
+    /// Get the Room Configuration from a CTA data block.
+    ///
+    /// Returns `None` if the data block tag is not DI_CTA_DATA_BLOCK_ROOM_CONFIG.
+    #[cfg(feature = "v0_2")]
+    pub fn room_configuration(&self) -> Option<RoomConfiguration> {
+        RoomConfiguration::from_ptr(unsafe {
+            ffi::cta::di_cta_data_block_get_room_configuration(self.0)
+        })
+    }
+
+    /// Get an array of Speaker Locations.
+    ///
+    /// Returns `None` if the data block tag is not DI_CTA_DATA_BLOCK_SPEAKER_LOCATION.
+    #[cfg(feature = "v0_2")]
+    pub fn speaker_locations(&self) -> impl Iterator<Item = SpeakerLocations> {
+        FFIIter::new(unsafe { ffi::cta::di_cta_data_block_get_speaker_locations(self.0) })
+    }
+
+    /// Get the DisplayID Type VII Video Timing from a CTA data block.
+    ///
+    /// Returns `None` if the data block tag is not
+    /// DI_CTA_DATA_BLOCK_DISPLAYID_VIDEO_TIMING_VII.
+    #[cfg(feature = "v0_2")]
+    pub fn did_type_vii_timing(&self) -> Option<crate::displayid::TypeIIIVIITiming> {
+        crate::displayid::TypeIIIVIITiming::from_ptr(unsafe {
+            ffi::cta::di_cta_data_block_get_did_type_vii_timing(self.0)
+                as *const ffi::displayid::di_displayid_type_i_ii_vii_timing
+        })
+    }
+
+    /// Get an array of Short Video References (SVRs) from a CTA data block. The
+    /// first SVR refers to the most-preferred Video Format, while the next SVRs
+    /// are listed in order of decreasing preference.
+    ///
+    /// Returns `None` if the data block tag is not
+    /// DI_CTA_DATA_BLOCK_VIDEO_FORMAT_PREF.
+    #[cfg(feature = "v0_2")]
+    pub fn svrs(&self) -> impl Iterator<Item = Svr> {
+        FFIIter::new(unsafe { ffi::cta::di_cta_data_block_get_svrs(self.0) })
+    }
 }
 
 /// CTA data block tag.
@@ -437,13 +486,12 @@ pub struct Sad {
     pub wma_pro: Option<SadWmaPro>,
 }
 
-/// Speaker allocation data block (SADB), defined in section 7.5.3.
+/// Indicates which speakers are present.
 ///
-/// This block indicates which speakers are present. See figure 6 for the meaning
-/// of the fields.
+/// See figure 6 for the meaning of the fields.
 #[derive(Debug, Copy, Clone, FFIFrom)]
-#[ffi(ffi::cta::di_cta_speaker_alloc_block)]
-pub struct SpeakerAllocBlock {
+#[ffi(ffi::cta::di_cta_speaker_allocation)]
+pub struct SpeakerAllocation {
     pub flw_frw: bool,
     pub flc_frc: bool,
     pub bc: bool,
@@ -462,6 +510,13 @@ pub struct SpeakerAllocBlock {
     pub btfl_btfr: bool,
     pub btfc: bool,
     pub tpbl_tpbr: bool,
+}
+
+/// Speaker allocation data block (SADB), defined in section 7.5.3.
+#[derive(Debug, Copy, Clone, FFIFrom)]
+#[ffi(ffi::cta::di_cta_speaker_alloc_block)]
+pub struct SpeakerAllocBlock {
+    pub speakers: SpeakerAllocation,
 }
 
 /// Over- and underscan capability.
@@ -864,4 +919,148 @@ impl InfoframeBlockRef {
     pub fn infoframes(&self) -> impl Iterator<Item = InfoframeDescriptor> {
         FFIIter::new(unsafe { (*self.0).infoframes })
     }
+}
+
+/// InfoFrame types, defined in table 7.
+///
+/// Note, the enum values don't match the specification.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, FFIFrom)]
+#[ffi(ffi::cta::di_cta_hdmi_audio_3d_channels)]
+#[repr(u32)]
+#[cfg(feature = "v0_2")]
+pub enum HdmiAudio3DChannels {
+    Unknown = ffi::cta::di_cta_hdmi_audio_3d_channels_DI_CTA_HDMI_AUDIO_3D_CHANNELS_UNKNOWN,
+    _10_2 = ffi::cta::di_cta_hdmi_audio_3d_channels_DI_CTA_HDMI_AUDIO_3D_CHANNELS_10_2,
+    _22_2 = ffi::cta::di_cta_hdmi_audio_3d_channels_DI_CTA_HDMI_AUDIO_3D_CHANNELS_22_2,
+    _30_2 = ffi::cta::di_cta_hdmi_audio_3d_channels_DI_CTA_HDMI_AUDIO_3D_CHANNELS_30_2,
+}
+
+/// HDMI 3D Audio
+#[derive(Debug, Copy, Clone, FFIFrom)]
+#[ffi(ffi::cta::di_cta_hdmi_audio_3d)]
+#[wrap]
+#[cfg(feature = "v0_2")]
+pub struct HdmiAudio3d {
+    pub channels: HdmiAudio3DChannels,
+    pub speakers: SpeakerAllocation,
+}
+
+#[cfg(feature = "v0_2")]
+impl HdmiAudio3dRef {
+    pub fn sads(&self) -> impl Iterator<Item = Sad> {
+        FFIIter::new(unsafe { (*self.0).sads })
+    }
+}
+
+/// HDMI Multi-Stream Audio
+#[derive(Debug, Copy, Clone, FFIFrom)]
+#[ffi(ffi::cta::di_cta_hdmi_audio_multi_stream)]
+#[cfg(feature = "v0_2")]
+pub struct HdmiAudioMultiStream {
+    pub max_streams: ::std::os::raw::c_int,
+    pub supports_non_mixed: bool,
+}
+
+/// HDMI Audio
+#[derive(Debug, FFIFrom)]
+#[ffi(ffi::cta::di_cta_hdmi_audio_block)]
+#[wrap]
+#[cfg(feature = "v0_2")]
+pub struct HdmiAudioBlock {
+    #[ptr_deref]
+    pub multi_stream: Option<HdmiAudioMultiStream>,
+}
+
+#[cfg(feature = "v0_2")]
+impl HdmiAudioBlockRef {
+    pub fn audio_3d(&self) -> Option<HdmiAudio3dRef> {
+        HdmiAudio3dRef::from_ptr(unsafe { (*self.0).audio_3d })
+    }
+}
+
+/// Room Configuration Data Block, defined in section 7.5.15.
+#[derive(Debug, Copy, Clone, FFIFrom)]
+#[ffi(ffi::cta::di_cta_room_configuration)]
+#[cfg(feature = "v0_2")]
+pub struct RoomConfiguration {
+    pub speakers: SpeakerAllocation,
+    pub speaker_count: ::std::os::raw::c_int,
+    pub has_speaker_location_descriptors: bool,
+    pub max_x: ::std::os::raw::c_int,
+    pub max_y: ::std::os::raw::c_int,
+    pub max_z: ::std::os::raw::c_int,
+    pub display_x: f64,
+    pub display_y: f64,
+    pub display_z: f64,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, FFIFrom)]
+#[ffi(ffi::cta::di_cta_speaker_placement)]
+#[repr(u32)]
+#[cfg(feature = "v0_2")]
+pub enum SpeakerPlacement {
+    FL = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_FL,
+    FR = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_FR,
+    FC = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_FC,
+    LFE1 = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_LFE1,
+    BL = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_BL,
+    BR = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_BR,
+    FLC = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_FLC,
+    FRC = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_FRC,
+    BC = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_BC,
+    LFE2 = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_LFE2,
+    SIL = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_SIL,
+    SIR = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_SIR,
+    TPFL = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_TPFL,
+    TPFR = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_TPFR,
+    TPFC = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_TPFC,
+    TPC = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_TPC,
+    TPBL = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_TPBL,
+    TPBR = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_TPBR,
+    TPSIL = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_TPSIL,
+    TPSIR = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_TPSIR,
+    TPBC = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_TPBC,
+    BTFC = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_BTFC,
+    BTFL = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_BTFL,
+    BRFR = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_BRFR,
+    FLW = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_FLW,
+    FRW = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_FRW,
+    LS = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_LS,
+    RS = ffi::cta::di_cta_speaker_placement_DI_CTA_SPEAKER_PLACEMENT_RS,
+}
+
+/// Speaker Location Data Block, defined in section 7.5.16.
+#[derive(Debug, Copy, Clone, FFIFrom)]
+#[ffi(ffi::cta::di_cta_speaker_locations)]
+#[cfg(feature = "v0_2")]
+pub struct SpeakerLocations {
+    pub channel_index: ::std::os::raw::c_int,
+    pub is_active: bool,
+    pub has_coords: bool,
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
+    pub speaker_id: SpeakerPlacement,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, FFIFrom)]
+#[ffi(ffi::cta::di_cta_svr_type)]
+#[repr(u32)]
+#[cfg(feature = "v0_2")]
+pub enum SvrType {
+    VIC = ffi::cta::di_cta_svr_type_DI_CTA_SVR_TYPE_VIC,
+    DtdIndex = ffi::cta::di_cta_svr_type_DI_CTA_SVR_TYPE_DTD_INDEX,
+    T7T10VTDB = ffi::cta::di_cta_svr_type_DI_CTA_SVR_TYPE_T7T10VTDB,
+    FirstT8vtdb = ffi::cta::di_cta_svr_type_DI_CTA_SVR_TYPE_FIRST_T8VTDB,
+}
+
+/// Short Video Reference, defined in section 7.5.12.
+#[derive(Debug, Copy, Clone, FFIFrom)]
+#[ffi(ffi::cta::di_cta_svr)]
+#[cfg(feature = "v0_2")]
+pub struct Svr {
+    pub type_: SvrType,
+    pub vic: u8,
+    pub dtd_index: u8,
+    pub t7_t10_vtdb_index: u8,
 }

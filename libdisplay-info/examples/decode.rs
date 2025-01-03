@@ -804,7 +804,7 @@ fn print_cta(cta: CTA<'_>) {
                 }
             }
             cta::DataBlockTag::SpeakerAlloc => {
-                let speaker_alloc = data_block.speaker_alloc().unwrap();
+                let speaker_alloc = data_block.speaker_alloc().unwrap().speakers;
 
                 if speaker_alloc.flw_frw {
                     println!("    FLw/FRw - Front Left/Right Wide");
@@ -1514,7 +1514,7 @@ fn print_displayid_type_i_timing_block(data_block: &displayid::DataBlockRef) {
     }
 }
 
-fn print_displayid_type_i_timing(t: displayid::TypeITiming) {
+fn print_displayid_type_i_timing(t: displayid::TypeIIIVIITiming) {
     let (horiz_ratio, vert_ratio) = displayid_type_i_timing_aspect_ratio(t.aspect_ratio);
 
     let horiz_total = t.horiz_active + t.horiz_blank;
@@ -1536,7 +1536,7 @@ fn print_displayid_type_i_timing(t: displayid::TypeITiming) {
         t.pixel_clock_mhz
     );
     print!(" (aspect ");
-    if t.aspect_ratio == displayid::TypeITimingAspectRatio::Undefined {
+    if t.aspect_ratio == displayid::TimingAspectRatio::Undefined {
         print!("undefined");
     } else {
         print!("{}:{}", horiz_ratio, vert_ratio);
@@ -1562,17 +1562,17 @@ fn print_displayid_type_i_timing(t: displayid::TypeITiming) {
     println!();
 }
 
-fn displayid_type_i_timing_aspect_ratio(ratio: displayid::TypeITimingAspectRatio) -> (i32, i32) {
+fn displayid_type_i_timing_aspect_ratio(ratio: displayid::TimingAspectRatio) -> (i32, i32) {
     match ratio {
-        displayid::TypeITimingAspectRatio::_1_1 => (1, 1),
-        displayid::TypeITimingAspectRatio::_5_4 => (5, 4),
-        displayid::TypeITimingAspectRatio::_4_3 => (4, 3),
-        displayid::TypeITimingAspectRatio::_15_9 => (15, 9),
-        displayid::TypeITimingAspectRatio::_16_9 => (16, 9),
-        displayid::TypeITimingAspectRatio::_16_10 => (16, 10),
-        displayid::TypeITimingAspectRatio::_64_27 => (64, 27),
-        displayid::TypeITimingAspectRatio::_256_135 => (256, 135),
-        displayid::TypeITimingAspectRatio::Undefined => (0, 0),
+        displayid::TimingAspectRatio::_1_1 => (1, 1),
+        displayid::TimingAspectRatio::_5_4 => (5, 4),
+        displayid::TimingAspectRatio::_4_3 => (4, 3),
+        displayid::TimingAspectRatio::_15_9 => (15, 9),
+        displayid::TimingAspectRatio::_16_9 => (16, 9),
+        displayid::TimingAspectRatio::_16_10 => (16, 10),
+        displayid::TimingAspectRatio::_64_27 => (64, 27),
+        displayid::TimingAspectRatio::_256_135 => (256, 135),
+        displayid::TimingAspectRatio::Undefined => (0, 0),
     }
 }
 

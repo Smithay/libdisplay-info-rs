@@ -137,8 +137,26 @@ impl DataBlockRef {
     /// Get type I timings from a DisplayID data block.
     /// Returns `None` if the data block tag isn't
     /// DI_DISPLAYID_DATA_BLOCK_TYPE_I_TIMING.
-    pub fn type_i_timings(&self) -> impl Iterator<Item = TypeITiming> {
+    pub fn type_i_timings(&self) -> impl Iterator<Item = TypeIIIVIITiming> {
         FFIIter::new(unsafe { ffi::displayid::di_displayid_data_block_get_type_i_timings(self.0) })
+    }
+
+    /// Get type II timings from a DisplayID data block.
+    /// Returns `None` if the data block tag isn't
+    /// DI_DISPLAYID_DATA_BLOCK_TYPE_II_TIMING.
+    #[cfg(feature = "v0_2")]
+    pub fn type_ii_timings(&self) -> impl Iterator<Item = TypeIIIVIITiming> {
+        FFIIter::new(unsafe { ffi::displayid::di_displayid_data_block_get_type_ii_timings(self.0) })
+    }
+
+    /// Get type III timings from a DisplayID data block.
+    /// Returns `None` if the data block tag isn't
+    /// DI_DISPLAYID_DATA_BLOCK_TYPE_III_TIMING.
+    #[cfg(feature = "v0_2")]
+    pub fn type_iii_timings(&self) -> impl Iterator<Item = TypeIIITiming> {
+        FFIIter::new(unsafe {
+            ffi::displayid::di_displayid_data_block_get_type_iii_timings(self.0)
+        })
     }
 
     /// Get tiled display topology from a DisplayID data block.
@@ -184,46 +202,50 @@ pub struct DisplayParams {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, FFIFrom)]
-#[ffi(ffi::displayid::di_displayid_type_i_timing_stereo_3d)]
+#[ffi(ffi::displayid::di_displayid_type_i_ii_vii_timing_stereo_3d)]
 #[repr(u32)]
-pub enum TypeITimingStereo3d {
-    Never = ffi::displayid::di_displayid_type_i_timing_stereo_3d_DI_DISPLAYID_TYPE_I_TIMING_STEREO_3D_NEVER,
-    Always = ffi::displayid::di_displayid_type_i_timing_stereo_3d_DI_DISPLAYID_TYPE_I_TIMING_STEREO_3D_ALWAYS,
-    User = ffi::displayid::di_displayid_type_i_timing_stereo_3d_DI_DISPLAYID_TYPE_I_TIMING_STEREO_3D_USER,
+pub enum TypeIIIVIITimingStereo3d {
+    Never = ffi::displayid::di_displayid_type_i_ii_vii_timing_stereo_3d_DI_DISPLAYID_TYPE_I_II_VII_TIMING_STEREO_3D_NEVER,
+    Always = ffi::displayid::di_displayid_type_i_ii_vii_timing_stereo_3d_DI_DISPLAYID_TYPE_I_II_VII_TIMING_STEREO_3D_ALWAYS,
+    User = ffi::displayid::di_displayid_type_i_ii_vii_timing_stereo_3d_DI_DISPLAYID_TYPE_I_II_VII_TIMING_STEREO_3D_USER,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, FFIFrom)]
-#[ffi(ffi::displayid::di_displayid_type_i_timing_aspect_ratio)]
+#[ffi(ffi::displayid::di_displayid_timing_aspect_ratio)]
 #[repr(u32)]
-pub enum TypeITimingAspectRatio {
-    _1_1 = ffi::displayid::di_displayid_type_i_timing_aspect_ratio_DI_DISPLAYID_TYPE_I_TIMING_ASPECT_RATIO_1_1,
-    _5_4 = ffi::displayid::di_displayid_type_i_timing_aspect_ratio_DI_DISPLAYID_TYPE_I_TIMING_ASPECT_RATIO_5_4,
-    _4_3 = ffi::displayid::di_displayid_type_i_timing_aspect_ratio_DI_DISPLAYID_TYPE_I_TIMING_ASPECT_RATIO_4_3,
-    _15_9 = ffi::displayid::di_displayid_type_i_timing_aspect_ratio_DI_DISPLAYID_TYPE_I_TIMING_ASPECT_RATIO_15_9,
-    _16_9 = ffi::displayid::di_displayid_type_i_timing_aspect_ratio_DI_DISPLAYID_TYPE_I_TIMING_ASPECT_RATIO_16_9,
-    _16_10 = ffi::displayid::di_displayid_type_i_timing_aspect_ratio_DI_DISPLAYID_TYPE_I_TIMING_ASPECT_RATIO_16_10,
-    _64_27 = ffi::displayid::di_displayid_type_i_timing_aspect_ratio_DI_DISPLAYID_TYPE_I_TIMING_ASPECT_RATIO_64_27,
-    _256_135 = ffi::displayid::di_displayid_type_i_timing_aspect_ratio_DI_DISPLAYID_TYPE_I_TIMING_ASPECT_RATIO_256_135,
-    Undefined = ffi::displayid::di_displayid_type_i_timing_aspect_ratio_DI_DISPLAYID_TYPE_I_TIMING_ASPECT_RATIO_UNDEFINED,
+pub enum TimingAspectRatio {
+    _1_1 = ffi::displayid::di_displayid_timing_aspect_ratio_DI_DISPLAYID_TIMING_ASPECT_RATIO_1_1,
+    _5_4 = ffi::displayid::di_displayid_timing_aspect_ratio_DI_DISPLAYID_TIMING_ASPECT_RATIO_5_4,
+    _4_3 = ffi::displayid::di_displayid_timing_aspect_ratio_DI_DISPLAYID_TIMING_ASPECT_RATIO_4_3,
+    _15_9 = ffi::displayid::di_displayid_timing_aspect_ratio_DI_DISPLAYID_TIMING_ASPECT_RATIO_15_9,
+    _16_9 = ffi::displayid::di_displayid_timing_aspect_ratio_DI_DISPLAYID_TIMING_ASPECT_RATIO_16_9,
+    _16_10 =
+        ffi::displayid::di_displayid_timing_aspect_ratio_DI_DISPLAYID_TIMING_ASPECT_RATIO_16_10,
+    _64_27 =
+        ffi::displayid::di_displayid_timing_aspect_ratio_DI_DISPLAYID_TIMING_ASPECT_RATIO_64_27,
+    _256_135 =
+        ffi::displayid::di_displayid_timing_aspect_ratio_DI_DISPLAYID_TIMING_ASPECT_RATIO_256_135,
+    Undefined =
+        ffi::displayid::di_displayid_timing_aspect_ratio_DI_DISPLAYID_TIMING_ASPECT_RATIO_UNDEFINED,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, FFIFrom)]
-#[ffi(ffi::displayid::di_displayid_type_i_timing_sync_polarity)]
+#[ffi(ffi::displayid::di_displayid_type_i_ii_vii_timing_sync_polarity)]
 #[repr(u32)]
-pub enum TypeITimingSyncPolarity {
-    Negative = ffi::displayid::di_displayid_type_i_timing_sync_polarity_DI_DISPLAYID_TYPE_I_TIMING_SYNC_NEGATIVE,
-    Positive = ffi::displayid::di_displayid_type_i_timing_sync_polarity_DI_DISPLAYID_TYPE_I_TIMING_SYNC_POSITIVE,
+pub enum TypeIIIVIITimingSyncPolarity {
+    Negative = ffi::displayid::di_displayid_type_i_ii_vii_timing_sync_polarity_DI_DISPLAYID_TYPE_I_II_VII_TIMING_SYNC_NEGATIVE,
+    Positive = ffi::displayid::di_displayid_type_i_ii_vii_timing_sync_polarity_DI_DISPLAYID_TYPE_I_II_VII_TIMING_SYNC_POSITIVE,
 }
 
-// Type I timing, defined in section 4.4.1.
+/// Type I timing, defined in section 4.4.1.
 #[derive(Debug, Copy, Clone, FFIFrom)]
-#[ffi(ffi::displayid::di_displayid_type_i_timing)]
-pub struct TypeITiming {
+#[ffi(ffi::displayid::di_displayid_type_i_ii_vii_timing)]
+pub struct TypeIIIVIITiming {
     pub pixel_clock_mhz: f64,
     pub preferred: bool,
-    pub stereo_3d: TypeITimingStereo3d,
+    pub stereo_3d: TypeIIIVIITimingStereo3d,
     pub interlaced: bool,
-    pub aspect_ratio: TypeITimingAspectRatio,
+    pub aspect_ratio: TimingAspectRatio,
     pub horiz_active: i32,
     pub vert_active: i32,
     pub horiz_blank: i32,
@@ -232,8 +254,31 @@ pub struct TypeITiming {
     pub vert_offset: i32,
     pub horiz_sync_width: i32,
     pub vert_sync_width: i32,
-    pub horiz_sync_polarity: TypeITimingSyncPolarity,
-    pub vert_sync_polarity: TypeITimingSyncPolarity,
+    pub horiz_sync_polarity: TypeIIIVIITimingSyncPolarity,
+    pub vert_sync_polarity: TypeIIIVIITimingSyncPolarity,
+}
+
+/// Formula/algorithm for type III timings.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, FFIFrom)]
+#[ffi(ffi::displayid::di_displayid_type_iii_timing_algo)]
+#[repr(u32)]
+#[cfg(feature = "v0_2")]
+pub enum TyoeIIITimingAlgo {
+    CvtStandardBlanking = ffi::displayid::di_displayid_type_iii_timing_algo_DI_DISPLAYID_TYPE_III_TIMING_CVT_STANDARD_BLANKING,
+    CvtReducedBlacking = ffi::displayid::di_displayid_type_iii_timing_algo_DI_DISPLAYID_TYPE_III_TIMING_CVT_REDUCED_BLANKING,
+}
+
+/// Type I timing, defined in section 4.4.1.
+#[derive(Debug, Copy, Clone, FFIFrom)]
+#[ffi(ffi::displayid::di_displayid_type_iii_timing)]
+#[cfg(feature = "v0_2")]
+pub struct TypeIIITiming {
+    pub preferred: bool,
+    pub algo: TyoeIIITimingAlgo,
+    pub aspect_ratio: TimingAspectRatio,
+    pub horiz_active: i32,
+    pub interlaced: bool,
+    pub refresh_rate_hz: i32,
 }
 
 /// Behavior when more than 1 tile and less than total number of tiles are driven

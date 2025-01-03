@@ -330,44 +330,41 @@ extern "C" {
         data_block: *const di_displayid_data_block,
     ) -> *const di_displayid_display_params;
 }
-pub const di_displayid_type_i_timing_stereo_3d_DI_DISPLAYID_TYPE_I_TIMING_STEREO_3D_NEVER:
-    di_displayid_type_i_timing_stereo_3d = 0;
-pub const di_displayid_type_i_timing_stereo_3d_DI_DISPLAYID_TYPE_I_TIMING_STEREO_3D_ALWAYS:
-    di_displayid_type_i_timing_stereo_3d = 1;
-pub const di_displayid_type_i_timing_stereo_3d_DI_DISPLAYID_TYPE_I_TIMING_STEREO_3D_USER:
-    di_displayid_type_i_timing_stereo_3d = 2;
-pub type di_displayid_type_i_timing_stereo_3d = ::std::os::raw::c_uint;
-pub const di_displayid_type_i_timing_aspect_ratio_DI_DISPLAYID_TYPE_I_TIMING_ASPECT_RATIO_1_1:
-    di_displayid_type_i_timing_aspect_ratio = 0;
-pub const di_displayid_type_i_timing_aspect_ratio_DI_DISPLAYID_TYPE_I_TIMING_ASPECT_RATIO_5_4:
-    di_displayid_type_i_timing_aspect_ratio = 1;
-pub const di_displayid_type_i_timing_aspect_ratio_DI_DISPLAYID_TYPE_I_TIMING_ASPECT_RATIO_4_3:
-    di_displayid_type_i_timing_aspect_ratio = 2;
-pub const di_displayid_type_i_timing_aspect_ratio_DI_DISPLAYID_TYPE_I_TIMING_ASPECT_RATIO_15_9:
-    di_displayid_type_i_timing_aspect_ratio = 3;
-pub const di_displayid_type_i_timing_aspect_ratio_DI_DISPLAYID_TYPE_I_TIMING_ASPECT_RATIO_16_9:
-    di_displayid_type_i_timing_aspect_ratio = 4;
-pub const di_displayid_type_i_timing_aspect_ratio_DI_DISPLAYID_TYPE_I_TIMING_ASPECT_RATIO_16_10:
-    di_displayid_type_i_timing_aspect_ratio = 5;
-pub const di_displayid_type_i_timing_aspect_ratio_DI_DISPLAYID_TYPE_I_TIMING_ASPECT_RATIO_64_27:
-    di_displayid_type_i_timing_aspect_ratio = 6;
-pub const di_displayid_type_i_timing_aspect_ratio_DI_DISPLAYID_TYPE_I_TIMING_ASPECT_RATIO_256_135 : di_displayid_type_i_timing_aspect_ratio = 7 ;
-pub const di_displayid_type_i_timing_aspect_ratio_DI_DISPLAYID_TYPE_I_TIMING_ASPECT_RATIO_UNDEFINED : di_displayid_type_i_timing_aspect_ratio = 8 ;
-pub type di_displayid_type_i_timing_aspect_ratio = ::std::os::raw::c_uint;
-pub const di_displayid_type_i_timing_sync_polarity_DI_DISPLAYID_TYPE_I_TIMING_SYNC_NEGATIVE:
-    di_displayid_type_i_timing_sync_polarity = 0;
-pub const di_displayid_type_i_timing_sync_polarity_DI_DISPLAYID_TYPE_I_TIMING_SYNC_POSITIVE:
-    di_displayid_type_i_timing_sync_polarity = 1;
-pub type di_displayid_type_i_timing_sync_polarity = ::std::os::raw::c_uint;
-#[doc = " Type I timing, defined in section 4.4.1."]
+pub const di_displayid_type_i_ii_vii_timing_stereo_3d_DI_DISPLAYID_TYPE_I_II_VII_TIMING_STEREO_3D_NEVER : di_displayid_type_i_ii_vii_timing_stereo_3d = 0 ;
+pub const di_displayid_type_i_ii_vii_timing_stereo_3d_DI_DISPLAYID_TYPE_I_II_VII_TIMING_STEREO_3D_ALWAYS : di_displayid_type_i_ii_vii_timing_stereo_3d = 1 ;
+pub const di_displayid_type_i_ii_vii_timing_stereo_3d_DI_DISPLAYID_TYPE_I_II_VII_TIMING_STEREO_3D_USER : di_displayid_type_i_ii_vii_timing_stereo_3d = 2 ;
+pub type di_displayid_type_i_ii_vii_timing_stereo_3d = ::std::os::raw::c_uint;
+pub const di_displayid_timing_aspect_ratio_DI_DISPLAYID_TIMING_ASPECT_RATIO_1_1:
+    di_displayid_timing_aspect_ratio = 0;
+pub const di_displayid_timing_aspect_ratio_DI_DISPLAYID_TIMING_ASPECT_RATIO_5_4:
+    di_displayid_timing_aspect_ratio = 1;
+pub const di_displayid_timing_aspect_ratio_DI_DISPLAYID_TIMING_ASPECT_RATIO_4_3:
+    di_displayid_timing_aspect_ratio = 2;
+pub const di_displayid_timing_aspect_ratio_DI_DISPLAYID_TIMING_ASPECT_RATIO_15_9:
+    di_displayid_timing_aspect_ratio = 3;
+pub const di_displayid_timing_aspect_ratio_DI_DISPLAYID_TIMING_ASPECT_RATIO_16_9:
+    di_displayid_timing_aspect_ratio = 4;
+pub const di_displayid_timing_aspect_ratio_DI_DISPLAYID_TIMING_ASPECT_RATIO_16_10:
+    di_displayid_timing_aspect_ratio = 5;
+pub const di_displayid_timing_aspect_ratio_DI_DISPLAYID_TIMING_ASPECT_RATIO_64_27:
+    di_displayid_timing_aspect_ratio = 6;
+pub const di_displayid_timing_aspect_ratio_DI_DISPLAYID_TIMING_ASPECT_RATIO_256_135:
+    di_displayid_timing_aspect_ratio = 7;
+pub const di_displayid_timing_aspect_ratio_DI_DISPLAYID_TIMING_ASPECT_RATIO_UNDEFINED:
+    di_displayid_timing_aspect_ratio = 8;
+pub type di_displayid_timing_aspect_ratio = ::std::os::raw::c_uint;
+pub const di_displayid_type_i_ii_vii_timing_sync_polarity_DI_DISPLAYID_TYPE_I_II_VII_TIMING_SYNC_NEGATIVE : di_displayid_type_i_ii_vii_timing_sync_polarity = 0 ;
+pub const di_displayid_type_i_ii_vii_timing_sync_polarity_DI_DISPLAYID_TYPE_I_II_VII_TIMING_SYNC_POSITIVE : di_displayid_type_i_ii_vii_timing_sync_polarity = 1 ;
+pub type di_displayid_type_i_ii_vii_timing_sync_polarity = ::std::os::raw::c_uint;
+#[doc = " Type I timing, defined in DisplayID 1.3 section 4.4.1 and\n Type II timing, defined in DisplayID 1.3 section 4.4.2 and\n Type VII timing, defined in DisplayID 2.0 section 4.3.1."]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct di_displayid_type_i_timing {
+pub struct di_displayid_type_i_ii_vii_timing {
     pub pixel_clock_mhz: f64,
     pub preferred: bool,
-    pub stereo_3d: di_displayid_type_i_timing_stereo_3d,
+    pub stereo_3d: di_displayid_type_i_ii_vii_timing_stereo_3d,
     pub interlaced: bool,
-    pub aspect_ratio: di_displayid_type_i_timing_aspect_ratio,
+    pub aspect_ratio: di_displayid_timing_aspect_ratio,
     pub horiz_active: i32,
     pub vert_active: i32,
     pub horiz_blank: i32,
@@ -376,30 +373,33 @@ pub struct di_displayid_type_i_timing {
     pub vert_offset: i32,
     pub horiz_sync_width: i32,
     pub vert_sync_width: i32,
-    pub horiz_sync_polarity: di_displayid_type_i_timing_sync_polarity,
-    pub vert_sync_polarity: di_displayid_type_i_timing_sync_polarity,
+    pub horiz_sync_polarity: di_displayid_type_i_ii_vii_timing_sync_polarity,
+    pub vert_sync_polarity: di_displayid_type_i_ii_vii_timing_sync_polarity,
 }
 #[test]
-fn bindgen_test_layout_di_displayid_type_i_timing() {
-    const UNINIT: ::std::mem::MaybeUninit<di_displayid_type_i_timing> =
+fn bindgen_test_layout_di_displayid_type_i_ii_vii_timing() {
+    const UNINIT: ::std::mem::MaybeUninit<di_displayid_type_i_ii_vii_timing> =
         ::std::mem::MaybeUninit::uninit();
     let ptr = UNINIT.as_ptr();
     assert_eq!(
-        ::std::mem::size_of::<di_displayid_type_i_timing>(),
+        ::std::mem::size_of::<di_displayid_type_i_ii_vii_timing>(),
         64usize,
-        concat!("Size of: ", stringify!(di_displayid_type_i_timing))
+        concat!("Size of: ", stringify!(di_displayid_type_i_ii_vii_timing))
     );
     assert_eq!(
-        ::std::mem::align_of::<di_displayid_type_i_timing>(),
+        ::std::mem::align_of::<di_displayid_type_i_ii_vii_timing>(),
         8usize,
-        concat!("Alignment of ", stringify!(di_displayid_type_i_timing))
+        concat!(
+            "Alignment of ",
+            stringify!(di_displayid_type_i_ii_vii_timing)
+        )
     );
     assert_eq!(
         unsafe { ::std::ptr::addr_of!((*ptr).pixel_clock_mhz) as usize - ptr as usize },
         0usize,
         concat!(
             "Offset of field: ",
-            stringify!(di_displayid_type_i_timing),
+            stringify!(di_displayid_type_i_ii_vii_timing),
             "::",
             stringify!(pixel_clock_mhz)
         )
@@ -409,7 +409,7 @@ fn bindgen_test_layout_di_displayid_type_i_timing() {
         8usize,
         concat!(
             "Offset of field: ",
-            stringify!(di_displayid_type_i_timing),
+            stringify!(di_displayid_type_i_ii_vii_timing),
             "::",
             stringify!(preferred)
         )
@@ -419,7 +419,7 @@ fn bindgen_test_layout_di_displayid_type_i_timing() {
         12usize,
         concat!(
             "Offset of field: ",
-            stringify!(di_displayid_type_i_timing),
+            stringify!(di_displayid_type_i_ii_vii_timing),
             "::",
             stringify!(stereo_3d)
         )
@@ -429,7 +429,7 @@ fn bindgen_test_layout_di_displayid_type_i_timing() {
         16usize,
         concat!(
             "Offset of field: ",
-            stringify!(di_displayid_type_i_timing),
+            stringify!(di_displayid_type_i_ii_vii_timing),
             "::",
             stringify!(interlaced)
         )
@@ -439,7 +439,7 @@ fn bindgen_test_layout_di_displayid_type_i_timing() {
         20usize,
         concat!(
             "Offset of field: ",
-            stringify!(di_displayid_type_i_timing),
+            stringify!(di_displayid_type_i_ii_vii_timing),
             "::",
             stringify!(aspect_ratio)
         )
@@ -449,7 +449,7 @@ fn bindgen_test_layout_di_displayid_type_i_timing() {
         24usize,
         concat!(
             "Offset of field: ",
-            stringify!(di_displayid_type_i_timing),
+            stringify!(di_displayid_type_i_ii_vii_timing),
             "::",
             stringify!(horiz_active)
         )
@@ -459,7 +459,7 @@ fn bindgen_test_layout_di_displayid_type_i_timing() {
         28usize,
         concat!(
             "Offset of field: ",
-            stringify!(di_displayid_type_i_timing),
+            stringify!(di_displayid_type_i_ii_vii_timing),
             "::",
             stringify!(vert_active)
         )
@@ -469,7 +469,7 @@ fn bindgen_test_layout_di_displayid_type_i_timing() {
         32usize,
         concat!(
             "Offset of field: ",
-            stringify!(di_displayid_type_i_timing),
+            stringify!(di_displayid_type_i_ii_vii_timing),
             "::",
             stringify!(horiz_blank)
         )
@@ -479,7 +479,7 @@ fn bindgen_test_layout_di_displayid_type_i_timing() {
         36usize,
         concat!(
             "Offset of field: ",
-            stringify!(di_displayid_type_i_timing),
+            stringify!(di_displayid_type_i_ii_vii_timing),
             "::",
             stringify!(vert_blank)
         )
@@ -489,7 +489,7 @@ fn bindgen_test_layout_di_displayid_type_i_timing() {
         40usize,
         concat!(
             "Offset of field: ",
-            stringify!(di_displayid_type_i_timing),
+            stringify!(di_displayid_type_i_ii_vii_timing),
             "::",
             stringify!(horiz_offset)
         )
@@ -499,7 +499,7 @@ fn bindgen_test_layout_di_displayid_type_i_timing() {
         44usize,
         concat!(
             "Offset of field: ",
-            stringify!(di_displayid_type_i_timing),
+            stringify!(di_displayid_type_i_ii_vii_timing),
             "::",
             stringify!(vert_offset)
         )
@@ -509,7 +509,7 @@ fn bindgen_test_layout_di_displayid_type_i_timing() {
         48usize,
         concat!(
             "Offset of field: ",
-            stringify!(di_displayid_type_i_timing),
+            stringify!(di_displayid_type_i_ii_vii_timing),
             "::",
             stringify!(horiz_sync_width)
         )
@@ -519,7 +519,7 @@ fn bindgen_test_layout_di_displayid_type_i_timing() {
         52usize,
         concat!(
             "Offset of field: ",
-            stringify!(di_displayid_type_i_timing),
+            stringify!(di_displayid_type_i_ii_vii_timing),
             "::",
             stringify!(vert_sync_width)
         )
@@ -529,7 +529,7 @@ fn bindgen_test_layout_di_displayid_type_i_timing() {
         56usize,
         concat!(
             "Offset of field: ",
-            stringify!(di_displayid_type_i_timing),
+            stringify!(di_displayid_type_i_ii_vii_timing),
             "::",
             stringify!(horiz_sync_polarity)
         )
@@ -539,7 +539,7 @@ fn bindgen_test_layout_di_displayid_type_i_timing() {
         60usize,
         concat!(
             "Offset of field: ",
-            stringify!(di_displayid_type_i_timing),
+            stringify!(di_displayid_type_i_ii_vii_timing),
             "::",
             stringify!(vert_sync_polarity)
         )
@@ -549,7 +549,14 @@ extern "C" {
     #[doc = " Get type I timings from a DisplayID data block.\n\n The returned array is NULL-terminated.\n\n Returns NULL if the data block tag isn't\n DI_DISPLAYID_DATA_BLOCK_TYPE_I_TIMING."]
     pub fn di_displayid_data_block_get_type_i_timings(
         data_block: *const di_displayid_data_block,
-    ) -> *const *const di_displayid_type_i_timing;
+    ) -> *const *const di_displayid_type_i_ii_vii_timing;
+}
+#[cfg(feature = "v0_2")]
+extern "C" {
+    #[doc = " Get type II timings from a DisplayID data block.\n\n The returned array is NULL-terminated.\n\n Returns NULL if the data block tag isn't\n DI_DISPLAYID_DATA_BLOCK_TYPE_II_TIMING."]
+    pub fn di_displayid_data_block_get_type_ii_timings(
+        data_block: *const di_displayid_data_block,
+    ) -> *const *const di_displayid_type_i_ii_vii_timing;
 }
 pub const di_displayid_tiled_topo_missing_recv_behavior_DI_DISPLAYID_TILED_TOPO_MISSING_RECV_UNDEF : di_displayid_tiled_topo_missing_recv_behavior = 0 ;
 pub const di_displayid_tiled_topo_missing_recv_behavior_DI_DISPLAYID_TILED_TOPO_MISSING_RECV_TILE_ONLY : di_displayid_tiled_topo_missing_recv_behavior = 1 ;
@@ -828,6 +835,111 @@ extern "C" {
     pub fn di_displayid_data_block_get_tiled_topo(
         data_block: *const di_displayid_data_block,
     ) -> *const di_displayid_tiled_topo;
+}
+#[cfg(feature = "v0_2")]
+pub const di_displayid_type_iii_timing_algo_DI_DISPLAYID_TYPE_III_TIMING_CVT_STANDARD_BLANKING:
+    di_displayid_type_iii_timing_algo = 0;
+#[cfg(feature = "v0_2")]
+pub const di_displayid_type_iii_timing_algo_DI_DISPLAYID_TYPE_III_TIMING_CVT_REDUCED_BLANKING:
+    di_displayid_type_iii_timing_algo = 1;
+#[doc = " Formula/algorithm for type III timings."]
+#[cfg(feature = "v0_2")]
+pub type di_displayid_type_iii_timing_algo = ::std::os::raw::c_uint;
+#[doc = " Type III timing, defined in section 4.4.3."]
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+#[cfg(feature = "v0_2")]
+pub struct di_displayid_type_iii_timing {
+    pub preferred: bool,
+    pub algo: di_displayid_type_iii_timing_algo,
+    pub aspect_ratio: di_displayid_timing_aspect_ratio,
+    pub horiz_active: i32,
+    pub interlaced: bool,
+    pub refresh_rate_hz: i32,
+}
+#[test]
+#[cfg(feature = "v0_2")]
+fn bindgen_test_layout_di_displayid_type_iii_timing() {
+    const UNINIT: ::std::mem::MaybeUninit<di_displayid_type_iii_timing> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<di_displayid_type_iii_timing>(),
+        24usize,
+        concat!("Size of: ", stringify!(di_displayid_type_iii_timing))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<di_displayid_type_iii_timing>(),
+        4usize,
+        concat!("Alignment of ", stringify!(di_displayid_type_iii_timing))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).preferred) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(di_displayid_type_iii_timing),
+            "::",
+            stringify!(preferred)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).algo) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(di_displayid_type_iii_timing),
+            "::",
+            stringify!(algo)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).aspect_ratio) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(di_displayid_type_iii_timing),
+            "::",
+            stringify!(aspect_ratio)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).horiz_active) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(di_displayid_type_iii_timing),
+            "::",
+            stringify!(horiz_active)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).interlaced) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(di_displayid_type_iii_timing),
+            "::",
+            stringify!(interlaced)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).refresh_rate_hz) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(di_displayid_type_iii_timing),
+            "::",
+            stringify!(refresh_rate_hz)
+        )
+    );
+}
+#[cfg(feature = "v0_2")]
+extern "C" {
+    #[doc = " Get type III timings from a DisplayID data block.\n\n The returned array is NULL-terminated.\n\n Returns NULL if the data block tag isn't\n DI_DISPLAYID_DATA_BLOCK_TYPE_III_TIMING."]
+    pub fn di_displayid_data_block_get_type_iii_timings(
+        data_block: *const di_displayid_data_block,
+    ) -> *const *const di_displayid_type_iii_timing;
 }
 extern "C" {
     #[doc = " Get DisplayID data blocks.\n\n The returned array is NULL-terminated."]
