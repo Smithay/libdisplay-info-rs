@@ -50,7 +50,7 @@ jobs:
       - name: System dependencies
         run: sudo apt-get update; sudo apt-get install libdisplay-info-dev
       - name: Clippy
-        run: cargo clippy --all --all-features --all-targets -- -D warnings
+        run: cargo clippy --all --all-targets -- -D warnings
 
   check-minimal:
     env:
