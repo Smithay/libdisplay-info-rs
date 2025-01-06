@@ -4,7 +4,7 @@ categories = ["api-bindings"]
 description = "EDID and DisplayID library."
 documentation = "https://docs.rs/libdisplay-info/"
 edition = "2021"
-version = "0.2.0"
+version = "0.2.1"
 keywords = ["libdisplay", "DisplayID", "EDID"]
 license = "MIT"
 name = "libdisplay-info"
@@ -17,7 +17,7 @@ readme = "../README.md"
 v0_2 = ["libdisplay-info-sys/v0_2"]
 
 [dependencies]
-libdisplay-info-sys = { version = "0.2.0", path = "../libdisplay-info-sys" }
+libdisplay-info-sys = { version = "0.2.1", path = "../libdisplay-info-sys" }
 libc = "0.2.155"
 thiserror = "2.0.9"
 libdisplay-info-derive = { version = "0.1.0", path = "../libdisplay-info-derive" }
