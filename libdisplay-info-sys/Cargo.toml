@@ -4,14 +4,16 @@ categories = ["api-bindings"]
 description = "Low-level bindings for libdisplay-info."
 documentation = "https://docs.rs/libdisplay-info-sys/"
 edition = "2021"
-version = "0.2.1"
+version = "0.2.2"
 keywords = ["libdisplay", "DisplayID", "EDID"]
 license = "MIT"
 name = "libdisplay-info-sys"
 repository = "https://github.com/Smithay/libdisplay-info-rs"
 readme = "README.md"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[package.metadata.docs.rs]
+features = ["v0_2"]
+rustdoc-args = ["--cfg", "docsrs"]
 
 [features]
 v0_2 = []

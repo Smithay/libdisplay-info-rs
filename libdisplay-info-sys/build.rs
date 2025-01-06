@@ -1,8 +1,6 @@
 fn main() {
     if std::env::var("DOCS_RS").is_ok() {
-        // don't link against unavailable native lib in doc.rs builds and
-        // just assume the highest version is available
-        println!("cargo:rustc-cfg=feature=\"v0_2\"");
+        // don't link against unavailable native lib in doc.rs builds
         return;
     }
 
