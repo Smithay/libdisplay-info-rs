@@ -4,13 +4,13 @@ fn main() {
         return;
     }
 
-    let deps = system_deps::Config::new().probe().unwrap();
-    let native_lib = deps.get_by_name("libdisplay-info").unwrap();
+    let native_lib = pkg_config::Config::new()
+        .range_version("0.1.0".."0.3.0")
+        .probe("libdisplay-info")
+        .unwrap();
     let native_version = semver::Version::parse(&native_lib.version).unwrap();
-    let has_v2 = semver::VersionReq::parse(">=0.2")
-        .unwrap()
-        .matches(&native_version);
-    if has_v2 {
+    let v2 = semver::VersionReq::parse(">=0.2").unwrap();
+    if v2.matches(&native_version) {
         println!("cargo:rustc-cfg=feature=\"v0_2\"");
     }
 }
