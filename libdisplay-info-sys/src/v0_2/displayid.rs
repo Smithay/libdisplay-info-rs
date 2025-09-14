@@ -551,7 +551,6 @@ extern "C" {
         data_block: *const di_displayid_data_block,
     ) -> *const *const di_displayid_type_i_ii_vii_timing;
 }
-#[cfg(feature = "v0_2")]
 extern "C" {
     #[doc = " Get type II timings from a DisplayID data block.\n\n The returned array is NULL-terminated.\n\n Returns NULL if the data block tag isn't\n DI_DISPLAYID_DATA_BLOCK_TYPE_II_TIMING."]
     pub fn di_displayid_data_block_get_type_ii_timings(
@@ -836,19 +835,15 @@ extern "C" {
         data_block: *const di_displayid_data_block,
     ) -> *const di_displayid_tiled_topo;
 }
-#[cfg(feature = "v0_2")]
 pub const di_displayid_type_iii_timing_algo_DI_DISPLAYID_TYPE_III_TIMING_CVT_STANDARD_BLANKING:
     di_displayid_type_iii_timing_algo = 0;
-#[cfg(feature = "v0_2")]
 pub const di_displayid_type_iii_timing_algo_DI_DISPLAYID_TYPE_III_TIMING_CVT_REDUCED_BLANKING:
     di_displayid_type_iii_timing_algo = 1;
 #[doc = " Formula/algorithm for type III timings."]
-#[cfg(feature = "v0_2")]
 pub type di_displayid_type_iii_timing_algo = ::std::os::raw::c_uint;
 #[doc = " Type III timing, defined in section 4.4.3."]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-#[cfg(feature = "v0_2")]
 pub struct di_displayid_type_iii_timing {
     pub preferred: bool,
     pub algo: di_displayid_type_iii_timing_algo,
@@ -858,7 +853,6 @@ pub struct di_displayid_type_iii_timing {
     pub refresh_rate_hz: i32,
 }
 #[test]
-#[cfg(feature = "v0_2")]
 fn bindgen_test_layout_di_displayid_type_iii_timing() {
     const UNINIT: ::std::mem::MaybeUninit<di_displayid_type_iii_timing> =
         ::std::mem::MaybeUninit::uninit();
@@ -934,7 +928,6 @@ fn bindgen_test_layout_di_displayid_type_iii_timing() {
         )
     );
 }
-#[cfg(feature = "v0_2")]
 extern "C" {
     #[doc = " Get type III timings from a DisplayID data block.\n\n The returned array is NULL-terminated.\n\n Returns NULL if the data block tag isn't\n DI_DISPLAYID_DATA_BLOCK_TYPE_III_TIMING."]
     pub fn di_displayid_data_block_get_type_iii_timings(

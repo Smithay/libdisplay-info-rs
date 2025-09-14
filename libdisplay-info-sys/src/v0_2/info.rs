@@ -42,7 +42,6 @@ extern "C" {
 #[doc = " Display HDR static metadata"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-#[cfg(feature = "v0_2")]
 pub struct di_hdr_static_metadata {
     pub desired_content_max_luminance: f32,
     pub desired_content_max_frame_avg_luminance: f32,
@@ -54,7 +53,6 @@ pub struct di_hdr_static_metadata {
     pub hlg: bool,
 }
 #[test]
-#[cfg(feature = "v0_2")]
 fn bindgen_test_layout_di_hdr_static_metadata() {
     const UNINIT: ::std::mem::MaybeUninit<di_hdr_static_metadata> =
         ::std::mem::MaybeUninit::uninit();
@@ -157,7 +155,6 @@ fn bindgen_test_layout_di_hdr_static_metadata() {
         )
     );
 }
-#[cfg(feature = "v0_2")]
 extern "C" {
     #[doc = " Get HDR static metadata support information as defined in ANSI/CTA-861-H\n as HDR Static Metadata Data Block.\n\n The returned pointer is owned by the struct di_info passed in. It remains\n valid only as long as the di_info exists, and must not be freed by the\n caller.\n\n This function does not return NULL. When HDR static metadata does not exist,\n all luminance fields are zero and only traditional_sdr is flagged as\n supported."]
     pub fn di_info_get_hdr_static_metadata(info: *const di_info) -> *const di_hdr_static_metadata;
@@ -165,13 +162,11 @@ extern "C" {
 #[doc = " CIE 1931 2-degree observer chromaticity coordinates"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-#[cfg(feature = "v0_2")]
 pub struct di_chromaticity_cie1931 {
     pub x: f32,
     pub y: f32,
 }
 #[test]
-#[cfg(feature = "v0_2")]
 fn bindgen_test_layout_di_chromaticity_cie1931() {
     const UNINIT: ::std::mem::MaybeUninit<di_chromaticity_cie1931> =
         ::std::mem::MaybeUninit::uninit();
@@ -210,7 +205,6 @@ fn bindgen_test_layout_di_chromaticity_cie1931() {
 #[doc = " Display color primaries and default white point"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-#[cfg(feature = "v0_2")]
 pub struct di_color_primaries {
     pub has_primaries: bool,
     pub has_default_white_point: bool,
@@ -218,7 +212,6 @@ pub struct di_color_primaries {
     pub default_white: di_chromaticity_cie1931,
 }
 #[test]
-#[cfg(feature = "v0_2")]
 fn bindgen_test_layout_di_color_primaries() {
     const UNINIT: ::std::mem::MaybeUninit<di_color_primaries> = ::std::mem::MaybeUninit::uninit();
     let ptr = UNINIT.as_ptr();
@@ -273,7 +266,6 @@ fn bindgen_test_layout_di_color_primaries() {
         )
     );
 }
-#[cfg(feature = "v0_2")]
 extern "C" {
     #[doc = " Get display color primaries and default white point\n\n Get the parameters of the default RGB colorimetry mode which is always\n supported. Primaries for monochrome displays might be all zeroes.\n\n These primaries might not be display's physical primaries, but only the\n primaries of the default RGB colorimetry signal when using IT Video Format\n (ANSI/CTA-861-H, Section 5).\n\n The returned pointer is owned by the struct di_info passed in. It remains\n valid only as long as the di_info exists, and must not be freed by the\n caller.\n\n This function does not return NULL."]
     pub fn di_info_get_default_color_primaries(info: *const di_info) -> *const di_color_primaries;
@@ -281,7 +273,6 @@ extern "C" {
 #[doc = " Additional signal colorimetry encodings supported by the display"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-#[cfg(feature = "v0_2")]
 pub struct di_supported_signal_colorimetry {
     pub bt2020_cycc: bool,
     pub bt2020_ycc: bool,
@@ -290,7 +281,6 @@ pub struct di_supported_signal_colorimetry {
     pub ictcp: bool,
 }
 #[test]
-#[cfg(feature = "v0_2")]
 fn bindgen_test_layout_di_supported_signal_colorimetry() {
     const UNINIT: ::std::mem::MaybeUninit<di_supported_signal_colorimetry> =
         ::std::mem::MaybeUninit::uninit();
@@ -356,14 +346,12 @@ fn bindgen_test_layout_di_supported_signal_colorimetry() {
         )
     );
 }
-#[cfg(feature = "v0_2")]
 extern "C" {
     #[doc = " Get signal colorimetry encodings supported by the display\n\n These signal colorimetry encodings are supported in addition to the\n display's default RGB colorimetry. When you wish to use one of the additional\n encodings, they need to be explicitly enabled in the video signal. How to\n do that is specific to the signalling used, e.g. HDMI.\n\n Signal colorimetry encoding provides the color space that the signal is\n encoded for. This includes primary and white point chromaticities, and the\n YCbCr-RGB conversion if necessary. Also the transfer function is implied\n unless explicitly set otherwise, e.g. with HDR static metadata.\n See ANSI/CTA-861-H for details.\n\n The signal color volume can be considerably larger than the physically\n displayable color volume.\n\n The returned pointer is owned by the struct di_info passed in. It remains\n valid only as long as the di_info exists, and must not be freed by the\n caller.\n\n This function does not return NULL."]
     pub fn di_info_get_supported_signal_colorimetry(
         info: *const di_info,
     ) -> *const di_supported_signal_colorimetry;
 }
-#[cfg(feature = "v0_2")]
 extern "C" {
     #[doc = " Get display default transfer characteristic exponent (gamma)\n\n This should be the display gamma value when the display has been reset to\n its factory defaults, and it is driven with the default RGB colorimetry.\n The value is zero when unknown."]
     pub fn di_info_get_default_gamma(info: *const di_info) -> f32;

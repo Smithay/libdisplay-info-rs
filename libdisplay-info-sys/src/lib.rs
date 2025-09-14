@@ -3,10 +3,14 @@
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
 
-pub mod cta;
-pub mod cvt;
-pub mod displayid;
-pub mod dmt;
-pub mod edid;
-pub mod gtf;
-pub mod info;
+#[cfg_attr(docsrs, cfg(feature = "v0_1"))]
+#[cfg_attr(not(docsrs), cfg(all(feature = "v0_1", not(feature = "v0_2"))))]
+pub mod v0_1;
+
+#[cfg(feature = "v0_2")]
+pub mod v0_2;
+
+#[cfg(feature = "auto")]
+pub mod auto;
+#[cfg(feature = "auto")]
+pub use auto::*;
