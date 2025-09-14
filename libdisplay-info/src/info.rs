@@ -1,13 +1,13 @@
 //! High-level API.
 use crate::{edid::Edid, ffi, string_from_owned_ffi_ptr};
 
-#[cfg(feature = "v0_2")]
+#[cfg(any(feature = "v0_2", feature = "v0_3"))]
 use libdisplay_info_derive::FFIFrom;
 
 /// Display HDR static metadata
 #[derive(Debug, Copy, Clone, FFIFrom)]
 #[ffi(ffi::info::di_hdr_static_metadata)]
-#[cfg(feature = "v0_2")]
+#[cfg(any(feature = "v0_2", feature = "v0_3"))]
 pub struct HdrStaticMetadata {
     pub desired_content_max_luminance: f32,
     pub desired_content_max_frame_avg_luminance: f32,
@@ -22,7 +22,7 @@ pub struct HdrStaticMetadata {
 /// CIE 1931 2-degree observer chromaticity coordinates
 #[derive(Debug, Copy, Clone, FFIFrom)]
 #[ffi(ffi::info::di_chromaticity_cie1931)]
-#[cfg(feature = "v0_2")]
+#[cfg(any(feature = "v0_2", feature = "v0_3"))]
 pub struct ChromaticityCie1931 {
     pub x: f32,
     pub y: f32,
@@ -31,7 +31,7 @@ pub struct ChromaticityCie1931 {
 /// Display color primaries and default white point
 #[derive(Debug, Copy, Clone, FFIFrom)]
 #[ffi(ffi::info::di_color_primaries)]
-#[cfg(feature = "v0_2")]
+#[cfg(any(feature = "v0_2", feature = "v0_3"))]
 pub struct ColorPrimaries {
     pub has_primaries: bool,
     pub has_default_white_point: bool,
@@ -42,7 +42,7 @@ pub struct ColorPrimaries {
 /// Additional signal colorimetry encodings supported by the display
 #[derive(Debug, Copy, Clone, FFIFrom)]
 #[ffi(ffi::info::di_supported_signal_colorimetry)]
-#[cfg(feature = "v0_2")]
+#[cfg(any(feature = "v0_2", feature = "v0_3"))]
 pub struct SupportedSignalColorimetry {
     pub bt2020_cycc: bool,
     pub bt2020_ycc: bool,
@@ -151,7 +151,7 @@ impl Info {
     /// When HDR static metadata does not exist,
     /// all luminance fields are zero and only traditional_sdr is flagged as
     /// supported.
-    #[cfg(feature = "v0_2")]
+    #[cfg(any(feature = "v0_2", feature = "v0_3"))]
     pub fn hdr_static_metadata(&self) -> HdrStaticMetadata {
         // SAFETY: The returned pointer is owned by the struct di_info passed in. It remains
         // valid only as long as the di_info exists, and must not be freed by the
@@ -169,7 +169,7 @@ impl Info {
     /// These primaries might not be display's physical primaries, but only the
     /// primaries of the default RGB colorimetry signal when using IT Video Format
     /// (ANSI/CTA-861-H, Section 5).
-    #[cfg(feature = "v0_2")]
+    #[cfg(any(feature = "v0_2", feature = "v0_3"))]
     pub fn default_color_primaries(&self) -> ColorPrimaries {
         // SAFETY: The returned pointer is owned by the struct di_info passed in. It remains
         // valid only as long as the di_info exists, and must not be freed by the
@@ -194,7 +194,7 @@ impl Info {
     ///
     /// The signal color volume can be considerably larger than the physically
     /// displayable color volume.
-    #[cfg(feature = "v0_2")]
+    #[cfg(any(feature = "v0_2", feature = "v0_3"))]
     pub fn supported_signal_colorimetry(&self) -> SupportedSignalColorimetry {
         // SAFETY: The returned pointer is owned by the struct di_info passed in. It remains
         // valid only as long as the di_info exists, and must not be freed by the
@@ -212,7 +212,7 @@ impl Info {
     /// its factory defaults, and it is driven with the default RGB colorimetry.
     ///
     /// Returns `None` when unknown.
-    #[cfg(feature = "v0_2")]
+    #[cfg(any(feature = "v0_2", feature = "v0_3"))]
     pub fn default_gamma(&self) -> Option<f32> {
         // SAFETY: The value is zero when unknown.
         let default_gamma = unsafe { ffi::info::di_info_get_default_gamma(self.0) };

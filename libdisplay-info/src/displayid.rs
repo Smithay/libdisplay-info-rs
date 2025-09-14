@@ -144,7 +144,7 @@ impl DataBlockRef {
     /// Get type II timings from a DisplayID data block.
     /// Returns `None` if the data block tag isn't
     /// DI_DISPLAYID_DATA_BLOCK_TYPE_II_TIMING.
-    #[cfg(feature = "v0_2")]
+    #[cfg(any(feature = "v0_2", feature = "v0_3"))]
     pub fn type_ii_timings(&self) -> impl Iterator<Item = TypeIIIVIITiming> {
         FFIIter::new(unsafe { ffi::displayid::di_displayid_data_block_get_type_ii_timings(self.0) })
     }
@@ -152,7 +152,7 @@ impl DataBlockRef {
     /// Get type III timings from a DisplayID data block.
     /// Returns `None` if the data block tag isn't
     /// DI_DISPLAYID_DATA_BLOCK_TYPE_III_TIMING.
-    #[cfg(feature = "v0_2")]
+    #[cfg(any(feature = "v0_2", feature = "v0_3"))]
     pub fn type_iii_timings(&self) -> impl Iterator<Item = TypeIIITiming> {
         FFIIter::new(unsafe {
             ffi::displayid::di_displayid_data_block_get_type_iii_timings(self.0)
@@ -262,7 +262,7 @@ pub struct TypeIIIVIITiming {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, FFIFrom)]
 #[ffi(ffi::displayid::di_displayid_type_iii_timing_algo)]
 #[repr(u32)]
-#[cfg(feature = "v0_2")]
+#[cfg(any(feature = "v0_2", feature = "v0_3"))]
 pub enum TyoeIIITimingAlgo {
     CvtStandardBlanking = ffi::displayid::di_displayid_type_iii_timing_algo_DI_DISPLAYID_TYPE_III_TIMING_CVT_STANDARD_BLANKING,
     CvtReducedBlacking = ffi::displayid::di_displayid_type_iii_timing_algo_DI_DISPLAYID_TYPE_III_TIMING_CVT_REDUCED_BLANKING,
@@ -271,7 +271,7 @@ pub enum TyoeIIITimingAlgo {
 /// Type I timing, defined in section 4.4.1.
 #[derive(Debug, Copy, Clone, FFIFrom)]
 #[ffi(ffi::displayid::di_displayid_type_iii_timing)]
-#[cfg(feature = "v0_2")]
+#[cfg(any(feature = "v0_2", feature = "v0_3"))]
 pub struct TypeIIITiming {
     pub preferred: bool,
     pub algo: TyoeIIITimingAlgo,
