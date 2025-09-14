@@ -5,11 +5,19 @@ use std::{
     marker::PhantomData,
 };
 
+#[cfg(not(docsrs))]
+mod feature_check {
+    #[cfg(all(feature = "v0_2", feature = "v0_3"))]
+    compile_error!("Either feature \"v0_2\" or \"v0_3\" must be enabled, but not both.");
+}
+
 pub use libdisplay_info_sys as ffi;
 
 pub mod cta;
 pub mod cvt;
 pub mod displayid;
+#[cfg(feature = "v0_3")]
+pub mod displayid2;
 pub mod dmt;
 pub mod edid;
 pub mod gtf;
