@@ -90,6 +90,8 @@ jobs:
           submodules: recursive
       - name: Rust toolchain
         uses: dtolnay/rust-toolchain@1.70
+      - uses: taiki-e/install-action@cargo-hack
+      - uses: taiki-e/install-action@cargo-minimal-versions
       - name: Cargo cache
         uses: actions/cache@v3
         with:
@@ -100,7 +102,7 @@ jobs:
       - name: System dependencies
         run: sudo apt-get update; sudo apt-get install libdisplay-info-dev
       - name: Check
-        run: cargo check --all
+        run: cargo minimal-versions check --all
 
   test:
     needs:
