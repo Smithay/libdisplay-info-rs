@@ -151,11 +151,21 @@ pub fn ffi_from_fn(input: TokenStream) -> TokenStream {
                                     }
                                 }
                             } else if field.ptr_deref {
-                                quote! {
-                                    if value.#ident.is_null() {
-                                        None
-                                    } else {
-                                        Some(#option_type::from(unsafe { *value.#ident }))
+                                if let Some(cast_as) = field.cast_as.as_ref() {
+                                    quote! {
+                                        if value.#ident.is_null() {
+                                            None
+                                        } else {
+                                            Some(#option_type::from(unsafe { *(value.#ident as #cast_as) }))
+                                        }
+                                    }
+                                } else {
+                                    quote! {
+                                        if value.#ident.is_null() {
+                                            None
+                                        } else {
+                                            Some(#option_type::from(unsafe { *value.#ident }))
+                                        }
                                     }
                                 }
                             } else {
