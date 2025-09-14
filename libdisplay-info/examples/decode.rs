@@ -1053,7 +1053,11 @@ fn print_vic(vic: u8) {
     let buf = format!(
         "{}{}",
         fmt.v_active,
-        fmt.interlaced.then_some("i").unwrap_or_default()
+        if fmt.interlaced {
+            "i"
+        } else {
+            Default::default()
+        }
     );
 
     print!(":");
@@ -1274,14 +1278,16 @@ fn print_cta_sad(sad: cta::Sad) {
     if let Some(mpeg_aac) = sad.mpeg_aac {
         println!(
             "      AAC audio frame lengths:{}%{}",
-            mpeg_aac
-                .has_frame_length_1024
-                .then_some(" 1024_TL")
-                .unwrap_or_default(),
-            mpeg_aac
-                .has_frame_length_960
-                .then_some(" 960_TL")
-                .unwrap_or_default()
+            if mpeg_aac.has_frame_length_1024 {
+                " 1024_TL"
+            } else {
+                Default::default()
+            },
+            if mpeg_aac.has_frame_length_960 {
+                " 960_TL"
+            } else {
+                Default::default()
+            }
         );
     }
 
@@ -1353,9 +1359,11 @@ fn print_cta_vesa_dddb(dddb: cta::VesaDddb) {
     );
     println!(
         "    Overdrive {}recommended",
-        dddb.overdrive_not_recommended
-            .then_some("not")
-            .unwrap_or_default()
+        if dddb.overdrive_not_recommended {
+            "not"
+        } else {
+            Default::default()
+        }
     );
     println!(
         "    Deinterlacing: {}",
