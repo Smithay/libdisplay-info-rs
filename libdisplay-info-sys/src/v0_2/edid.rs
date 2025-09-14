@@ -1727,10 +1727,6 @@ fn bindgen_test_layout_di_edid_display_range_limits_cvt() {
         )
     );
 }
-#[cfg(not(feature = "v0_2"))]
-pub type di_edid_display_range_limits_max_pixel_clock_hz = i32;
-#[cfg(feature = "v0_2")]
-pub type di_edid_display_range_limits_max_pixel_clock_hz = i64;
 #[doc = " EDID display range limits, defined in section 3.10.3.3.1."]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -1739,110 +1735,12 @@ pub struct di_edid_display_range_limits {
     pub max_vert_rate_hz: i32,
     pub min_horiz_rate_hz: i32,
     pub max_horiz_rate_hz: i32,
-    pub max_pixel_clock_hz: di_edid_display_range_limits_max_pixel_clock_hz,
+    pub max_pixel_clock_hz: i64,
     pub type_: di_edid_display_range_limits_type,
     pub secondary_gtf: *const di_edid_display_range_limits_secondary_gtf,
     pub cvt: *const di_edid_display_range_limits_cvt,
 }
 #[test]
-#[cfg(not(feature = "v0_2"))]
-fn bindgen_test_layout_di_edid_display_range_limits() {
-    const UNINIT: ::std::mem::MaybeUninit<di_edid_display_range_limits> =
-        ::std::mem::MaybeUninit::uninit();
-    let ptr = UNINIT.as_ptr();
-    assert_eq!(
-        ::std::mem::size_of::<di_edid_display_range_limits>(),
-        40usize,
-        concat!("Size of: ", stringify!(di_edid_display_range_limits))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<di_edid_display_range_limits>(),
-        8usize,
-        concat!("Alignment of ", stringify!(di_edid_display_range_limits))
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).min_vert_rate_hz) as usize - ptr as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(di_edid_display_range_limits),
-            "::",
-            stringify!(min_vert_rate_hz)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).max_vert_rate_hz) as usize - ptr as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(di_edid_display_range_limits),
-            "::",
-            stringify!(max_vert_rate_hz)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).min_horiz_rate_hz) as usize - ptr as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(di_edid_display_range_limits),
-            "::",
-            stringify!(min_horiz_rate_hz)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).max_horiz_rate_hz) as usize - ptr as usize },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(di_edid_display_range_limits),
-            "::",
-            stringify!(max_horiz_rate_hz)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).max_pixel_clock_hz) as usize - ptr as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(di_edid_display_range_limits),
-            "::",
-            stringify!(max_pixel_clock_hz)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).type_) as usize - ptr as usize },
-        20usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(di_edid_display_range_limits),
-            "::",
-            stringify!(type_)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).secondary_gtf) as usize - ptr as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(di_edid_display_range_limits),
-            "::",
-            stringify!(secondary_gtf)
-        )
-    );
-    assert_eq!(
-        unsafe { ::std::ptr::addr_of!((*ptr).cvt) as usize - ptr as usize },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(di_edid_display_range_limits),
-            "::",
-            stringify!(cvt)
-        )
-    );
-}
-#[test]
-#[cfg(feature = "v0_2")]
 fn bindgen_test_layout_di_edid_display_range_limits() {
     const UNINIT: ::std::mem::MaybeUninit<di_edid_display_range_limits> =
         ::std::mem::MaybeUninit::uninit();

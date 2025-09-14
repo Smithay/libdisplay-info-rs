@@ -12,10 +12,13 @@ repository = "https://github.com/Smithay/libdisplay-info-rs"
 readme = "README.md"
 
 [package.metadata.docs.rs]
-features = ["v0_2"]
+all-features = true
 rustdoc-args = ["--cfg", "docsrs"]
 
 [features]
+default = ["auto"]
+auto = []
+v0_1 = []
 v0_2 = []
 
 [build-dependencies]
