@@ -4,11 +4,12 @@ categories = ["api-bindings"]
 description = "Utility crate for managing FFI bindings in libdisplay-info."
 documentation = "https://docs.rs/libdisplay-info-derive/"
 edition = "2021"
-version = "0.1.0"
+version = "0.1.1"
 keywords = ["libdisplay", "DisplayID", "EDID"]
 license = "MIT"
 name = "libdisplay-info-derive"
 repository = "https://github.com/Smithay/libdisplay-info-rs"
+rust-version = "1.70.0"
 
 [lib]
 proc-macro = true
